@@ -3,6 +3,7 @@ var debug = Application.console.log;
 var CalilayPrefWindow = {
     cityData: null,
     appkey: '0f316d2b698c28451ed3f5f5223df15b',
+    maxNum: 5,
     ajaxGet: function (url, callback) {
         var req = new XMLHttpRequest();
         req.open('get', url, true);
@@ -22,29 +23,18 @@ var CalilayPrefWindow = {
         return value;
     },
 
+    setPrefValue: function (index, key, value) {
+        var name = "extensions.calilay.library" + index + "." + key;
+        Application.prefs.setValue(name, value);
+    },
+
     onLoad: function () {
         CalilayPrefWindow.ajaxGet("http://calil.jp/city_list", function (text) {
                          var json = text.match(/loadcity\((.*?)\);$/);
 	                     eval('var data = ' + json[1]);
 	                     CalilayPrefWindow.loadCity(data);
                      });
-
-        var libraryList = document.getElementById("libraryList");
-
-        for (var i = 1; i <= 5; i++) {
-            if (CalilayPrefWindow.getPrefValue(i, "enable", false)) {
-                var pref = CalilayPrefWindow.getPrefValue(i, "pref", "");
-                var city = CalilayPrefWindow.getPrefValue(i, "city", "");
-                var listitem = document.createElement("listitem");
-                var prefCell = document.createElement("listcell");
-                prefCell.setAttribute("label", pref);
-                var cityCell = document.createElement("listcell");
-                cityCell.setAttribute("label", city);
-                listitem.appendChild(prefCell);
-                listitem.appendChild(cityCell);
-                libraryList.appendChild(listitem);
-            }
-        }
+        CalilayPrefWindow.refreshLibraryList();
     },
 
     loadCity: function (data) {
@@ -59,12 +49,15 @@ var CalilayPrefWindow = {
     },
 
     prefOnSelect: function () {
-        var citySelect = document.getElementById("citySelect");
-        var prefSelect = document.getElementById("prefSelect");
+        var prefSelect   = document.getElementById("prefSelect");
+        var citySelect   = document.getElementById("citySelect");
+        var systemSelect = document.getElementById("systemSelect");
+
         var selectedItem = prefSelect.selectedItem;
         if (selectedItem) {
             citySelect.disabled = false;
             citySelect.selectedItem = null;
+            systemSelect.selectedItem = null;
             document.getElementById("systemSelect").disabled = true;
             document.getElementById("addButton").disabled = true;
             var cities = CalilayPrefWindow.cityData[prefSelect.selectedItem.label];
@@ -106,6 +99,7 @@ var CalilayPrefWindow = {
                 var systemSelect = document.getElementById("systemSelect");
                 CalilayPrefWindow.removeChildren(systemSelect.menupopup);
                 systemSelect.disabled = false;
+                systemSelect.selectedItem = null;
                 var id;
                 for (id in systems) {
                     systemSelect.appendItem(systems[id], id);
@@ -117,14 +111,16 @@ var CalilayPrefWindow = {
     },
 
     systemOnSelect: function (selected) {
-        var systemSelect = document.getElementById("systemSelect");
         var button = document.getElementById("addButton");
         button.disabled = false;
         button.focus();
     },
 
-
     addOnPush: function () {
+        var systemSelect = document.getElementById("systemSelect");
+        var selectedItem = systemSelect.selectedItem;
+        CalilayPrefWindow.addLibrary(selectedItem.value, selectedItem.label);
+        CalilayPrefWindow.refreshLibraryList();
     },
 
     removeOnPush: function () {
@@ -134,7 +130,50 @@ var CalilayPrefWindow = {
         while (element.firstChild) {
             element.removeChild(element.firstChild);   
         }
-    }
+    },
 
+    refreshLibraryList: function () {
+        var libraryList = document.getElementById("libraryList");
+        CalilayPrefWindow.removeChildren(libraryList);
+        for (var i = 1; i <= CalilayPrefWindow.maxNum; i++) {
+            if (CalilayPrefWindow.getPrefValue(i, "enable", false)) {
+                var name = CalilayPrefWindow.getPrefValue(i, "name", "");
+                libraryList.appendItem(name, name);
+            }
+        }
+    },
+
+    addLibrary: function (id, name) {
+        var libraryList = document.getElementById("libraryList");
+        var emptyIndex = 0;
+        if (isDuplicate(id)) {
+            alert("既に同じ図書館が登録されています。");
+            return;
+        }
+
+        for (var i = 1; i <= CalilayPrefWindow.maxNum; i++) {
+            if (!CalilayPrefWindow.getPrefValue(i, "enable", false)) {
+                emptyIndex = i;
+                break;
+            }
+        }
+        if (emptyIndex) {
+            CalilayPrefWindow.setPrefValue(i, "enable", true);
+            CalilayPrefWindow.setPrefValue(i, "id", id);
+            CalilayPrefWindow.setPrefValue(i, "name", name);
+        } else {
+            alert("これ以上図書館を追加できません。");
+        }
+
+        function isDuplicate(id) {
+            for (var i = 1; i <= CalilayPrefWindow.maxNum; i++) {
+                if (CalilayPrefWindow.getPrefValue(i, "enable", false) &&
+                    id === CalilayPrefWindow.getPrefValue(i, "id", "")) {
+                    return true;
+                }       
+            }
+            return false;
+        }
+    }
 };
 window.addEventListener('load', CalilayPrefWindow.onLoad, false);

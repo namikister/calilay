@@ -10,15 +10,6 @@
     </preferences>
     <hbox>
       <listbox id="libraryList">
-        <listhead>
-          <listheader label="県"/>
-          <listheader label="市町村"/>
-        </listhead>
-
-        <listcols>
-          <listcol flex="1"/>
-          <listcol flex="1"/>
-        </listcols>
       </listbox>
     </hbox>
     <hbox>

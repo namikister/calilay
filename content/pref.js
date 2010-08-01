@@ -124,6 +124,20 @@ var CalilayPrefWindow = {
     },
 
     removeOnPush: function () {
+        var libraryList = document.getElementById('libraryList');
+        var item = libraryList.selectedItem;
+        if (item === null) {
+            alert("削除対象が選択されていません。");
+        } else {
+            CalilayPrefWindow.removeLibrary(item.value);
+            libraryList.removeItemAt(libraryList.getIndexOfItem(item));
+        }
+
+    },
+
+    librarySelected: function () {
+        var removeButton = document.getElementById("removeButton");
+        removeButton.disabled = false;
     },
 
     removeChildren: function (element) {
@@ -138,13 +152,24 @@ var CalilayPrefWindow = {
         for (var i = 1; i <= CalilayPrefWindow.maxNum; i++) {
             if (CalilayPrefWindow.getPrefValue(i, "enable", false)) {
                 var name = CalilayPrefWindow.getPrefValue(i, "name", "");
-                libraryList.appendItem(name, name);
+                var id =   CalilayPrefWindow.getPrefValue(i, "id", "");
+                libraryList.appendItem(name, id);
             }
         }
     },
 
+    removeLibrary: function (id) {
+        for (var i = 1; i <= CalilayPrefWindow.maxNum; i++) {
+            if (CalilayPrefWindow.getPrefValue(i, "enable", false) &&
+                id === CalilayPrefWindow.getPrefValue(i, "id", "")) {
+                CalilayPrefWindow.setPrefValue(i, "enable", false);
+                break;
+            }
+        }
+
+    },
+
     addLibrary: function (id, name) {
-        var libraryList = document.getElementById("libraryList");
         var emptyIndex = 0;
         if (isDuplicate(id)) {
             alert("既に同じ図書館が登録されています。");

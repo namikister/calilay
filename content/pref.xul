@@ -4,13 +4,14 @@
             title="calilay 図書館設定" bottons="accept,cancel">
   <script type='application/x-javascript' src='pref.js'></script>
   <prefpane id="pref.general" label="">
-    <preferences>
-      <preference id="extensions.calilay.library1.pref" name="extensions.calilay.library1.pref" type="string" />
-      <preference id="extensions.calilay.library1.city" name="extensions.calilay.library1.city" type="string" />
-    </preferences>
     <hbox>
-      <listbox id="libraryList">
+    <vbox>
+      <listbox id="libraryList" rows="5" onselect="CalilayPrefWindow.librarySelected();">
       </listbox>
+    </vbox>
+    <vbox>
+      <button id="removeButton" label="削除" oncommand="CalilayPrefWindow.removeOnPush();" disabled="true"/>
+    </vbox>
     </hbox>
     <hbox>
       <menulist id="prefSelect" width="100" oncommand="CalilayPrefWindow.prefOnSelect();">

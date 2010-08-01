@@ -15,5 +15,6 @@
         <em:maxVersion>3.6.*</em:maxVersion>
       </Description>
     </em:targetApplication>
+    <em:optionsURL>chrome://calilay/content/pref.xul</em:optionsURL>
   </Description>
 </RDF>

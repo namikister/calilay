@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<prefwindow id="calilay.pref" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+            title="calilay 図書館設定" bottons="accept,cancel">
+  <script type='application/x-javascript' src='pref.js'></script>
+  <prefpane id="pref.general" label="">
+    <preferences>
+      <preference id="extensions.calilay.library1.pref" name="extensions.calilay.library1.pref" type="string" />
+      <preference id="extensions.calilay.library1.city" name="extensions.calilay.library1.city" type="string" />
+    </preferences>
+    <hbox>
+      <listbox id="libraryList">
+        <listhead>
+          <listheader label="県"/>
+          <listheader label="市町村"/>
+        </listhead>
+
+        <listcols>
+          <listcol flex="1"/>
+          <listcol flex="1"/>
+        </listcols>
+      </listbox>
+    </hbox>
+    <hbox>
+      <menulist id="prefSelect" width="100" oncommand="CalilayPrefWindow.prefOnSelect();">
+        <menupopup>
+        </menupopup>
+      </menulist>
+      <menulist id="citySelect" width="100" oncommand="CalilayPrefWindow.cityOnSelect();" disabled="true">
+        <menupopup>
+        </menupopup>
+      </menulist>
+      <button id="addButton" label="追加" oncommand="CalilayPrefWindow.addOnPush();"/>
+    </hbox>
+  </prefpane>
+</prefwindow>

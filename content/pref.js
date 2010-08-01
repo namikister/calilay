@@ -1,4 +1,5 @@
 var debug = Application.console.log;
+
 var CalilayPrefWindow = {
     cityData: null,
     appkey: '0f316d2b698c28451ed3f5f5223df15b',
@@ -50,10 +51,9 @@ var CalilayPrefWindow = {
         var pref;
         var prefSelect = document.getElementById("prefSelect");
         var newitem;
+        CalilayPrefWindow.removeChildren(prefSelect.menupopup);
         for (pref in data) {
-            newitem = document.createElement("menuitem");
-            newitem.setAttribute("label", pref);
-            prefSelect.menupopup.appendChild(newitem);
+            prefSelect.appendItem(pref, pref);
         }
         CalilayPrefWindow.cityData = data;
     },
@@ -64,14 +64,16 @@ var CalilayPrefWindow = {
         var selectedItem = prefSelect.selectedItem;
         if (selectedItem) {
             citySelect.disabled = false;
+            citySelect.selectedItem = null;
+            document.getElementById("systemSelect").disabled = true;
+            document.getElementById("addButton").disabled = true;
             var cities = CalilayPrefWindow.cityData[prefSelect.selectedItem.label];
 	        var yindex = "あ,か,さ,た,な,は,ま,や,ら,わ".split(",");
+            CalilayPrefWindow.removeChildren(citySelect.menupopup);
             yindex.forEach(function (y) {
                                if (cities[y]) {
                                    cities[y].forEach(function (city) {
-                                                         var newitem = document.createElement("menuitem");
-                                                         newitem.setAttribute("label", city);
-                                                         citySelect.menupopup.appendChild(newitem);
+                                                         citySelect.appendItem(city, city);
                                                      });
                                }
                            });
@@ -80,11 +82,6 @@ var CalilayPrefWindow = {
     },
     
     cityOnSelect: function () {
-        var button = document.getElementById("addButton");
-        button.focus();
-    },
-
-    addOnPush: function () {
         var citySelect = document.getElementById("citySelect");
         var prefSelect = document.getElementById("prefSelect");
 	    var pref = prefSelect.selectedItem.label;
@@ -95,16 +92,49 @@ var CalilayPrefWindow = {
         CalilayPrefWindow.ajaxGet(url, function (text) {
 				         var json = text.match(/callback\((.*?)\);$/);
 				         eval('var data = ' + json[1]);
-				         CalilayPrefWindow.setLibrary(data, pref, city);
+				         setLibrary(data, pref, city);
                      });
+
+        function setLibrary(data, pref, city) {
+            if (data.length > 0) {
+		        var systems = {};
+                data.forEach(function(elem){
+                                 if (typeof systems[elem.systemid] === 'undefined') {
+                                     systems[elem.systemid] = elem.systemname;
+                                 }
+                             });
+                var systemSelect = document.getElementById("systemSelect");
+                CalilayPrefWindow.removeChildren(systemSelect.menupopup);
+                systemSelect.disabled = false;
+                var id;
+                for (id in systems) {
+                    systemSelect.appendItem(systems[id], id);
+                }
+	        } else {
+		        alert('図書館が見つかりませんでした。');
+	        }
+        }
     },
 
-    setLibrary: function (data, pref, city) {
-        if(data.length > 0){
-		    var systemids = data.map(function(elem){ return e.systemid; });
-	    }else{
-		    alert('図書館が見つかりませんでした。');
-	    }
+    systemOnSelect: function (selected) {
+        var systemSelect = document.getElementById("systemSelect");
+        var button = document.getElementById("addButton");
+        button.disabled = false;
+        button.focus();
+    },
+
+
+    addOnPush: function () {
+    },
+
+    removeOnPush: function () {
+    },
+
+    removeChildren: function (element) {
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);   
+        }
     }
+
 };
 window.addEventListener('load', CalilayPrefWindow.onLoad, false);

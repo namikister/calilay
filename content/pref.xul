@@ -30,7 +30,11 @@
         <menupopup>
         </menupopup>
       </menulist>
-      <button id="addButton" label="追加" oncommand="CalilayPrefWindow.addOnPush();"/>
+      <menulist id="systemSelect" width="200" oncommand="CalilayPrefWindow.systemOnSelect();" disabled="true">
+        <menupopup>
+        </menupopup>
+      </menulist>
+      <button id="addButton" label="追加" oncommand="CalilayPrefWindow.addOnPush();" disabled="true"/>
     </hbox>
   </prefpane>
 </prefwindow>

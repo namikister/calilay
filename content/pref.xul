@@ -4,9 +4,21 @@
             title="calilay 図書館設定" bottons="accept,cancel">
   <script type='application/x-javascript' src='pref.js'></script>
   <prefpane id="pref.general" label="">
+    <preferences>
+      <preference id="library1" name="extensions.calilay.library1.id" type="string" />
+      <preference id="library2" name="extensions.calilay.library2.id" type="string" />
+      <preference id="library3" name="extensions.calilay.library3.id" type="string" />
+      <preference id="library4" name="extensions.calilay.library4.id" type="string" />
+      <preference id="library5" name="extensions.calilay.library5.id" type="string" />
+    </preferences>
     <hbox>
     <vbox>
       <listbox id="libraryList" rows="5" onselect="CalilayPrefWindow.librarySelected();">
+        <listitem preference="library1"/>
+        <listitem preference="library2"/>
+        <listitem preference="library3"/>
+        <listitem preference="library4"/>
+        <listitem preference="library5"/>
       </listbox>
     </vbox>
     <vbox>

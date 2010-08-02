@@ -3,7 +3,7 @@ var debug = Application.console.log;
 var CalilayPrefWindow = {
     cityData: null,
     appkey: '0f316d2b698c28451ed3f5f5223df15b',
-    maxNum: 5,
+    maxNum: 1,
     ajaxGet: function (url, callback) {
         var req = new XMLHttpRequest();
         req.open('get', url, true);
@@ -17,16 +17,16 @@ var CalilayPrefWindow = {
         req.send(null);
     },
 
-    getPrefValue: function (index, key, defaultval) {
-        var name = "extensions.calilay.library" + index + "." + key;
-        var value = Application.prefs.getValue(name, defaultval);
-        return value;
-    },
+    // getPrefValue: function (index, key, defaultval) {
+    //     var name = "extensions.calilay.library" + index + "." + key;
+    //     var value = Application.prefs.getValue(name, defaultval);
+    //     return value;
+    // },
 
-    setPrefValue: function (index, key, value) {
-        var name = "extensions.calilay.library" + index + "." + key;
-        Application.prefs.setValue(name, value);
-    },
+    // setPrefValue: function (index, key, value) {
+    //     var name = "extensions.calilay.library" + index + "." + key;
+    //     Application.prefs.setValue(name, value);
+    // },
 
     onLoad: function () {
         CalilayPrefWindow.ajaxGet("http://calil.jp/city_list", function (text) {
@@ -119,8 +119,15 @@ var CalilayPrefWindow = {
     addOnPush: function () {
         var systemSelect = document.getElementById("systemSelect");
         var selectedItem = systemSelect.selectedItem;
-        CalilayPrefWindow.addLibrary(selectedItem.value, selectedItem.label);
-        CalilayPrefWindow.refreshLibraryList();
+        var libraryList = document.getElementById("libraryList");
+        var nodes = libraryList.childNodes;
+        var i, len = nodes.length;
+        for (i = 0; i < len; i++) {
+            if (!CalilayPrefWindow.getPrefValue(nodes.item(i))) {
+                CalilayPrefWindow.setPrefValue(nodes.item(i), selectedItem.value);
+                nodes.item(i).label = selectedItem.label;
+            }
+        }
     },
 
     removeOnPush: function () {
@@ -129,10 +136,9 @@ var CalilayPrefWindow = {
         if (item === null) {
             alert("削除対象が選択されていません。");
         } else {
-            CalilayPrefWindow.removeLibrary(item.value);
-            libraryList.removeItemAt(libraryList.getIndexOfItem(item));
+            CalilayPrefWindow.setPrefValue(item, "");
+            item.label = "";
         }
-
     },
 
     librarySelected: function () {
@@ -148,14 +154,33 @@ var CalilayPrefWindow = {
 
     refreshLibraryList: function () {
         var libraryList = document.getElementById("libraryList");
-        CalilayPrefWindow.removeChildren(libraryList);
-        for (var i = 1; i <= CalilayPrefWindow.maxNum; i++) {
-            if (CalilayPrefWindow.getPrefValue(i, "enable", false)) {
-                var name = CalilayPrefWindow.getPrefValue(i, "name", "");
-                var id =   CalilayPrefWindow.getPrefValue(i, "id", "");
-                libraryList.appendItem(name, id);
+        var i, id, pref;
+        var nodes = libraryList.childNodes;
+        var len = nodes.length;
+        for (i = 0; i < len; i++){
+            id = CalilayPrefWindow.getPrefValue(nodes.item(i));
+            if (id) {
+				setSystemName(id, nodes.item(i));
             }
         }
+        function setSystemName(id, elem) {
+	        var url = 'http://api.calil.jp/library?appkey='+CalilayPrefWindow.appkey+'&format=json&systemid='+id;
+            CalilayPrefWindow.ajaxGet(url, function (text) {
+				                          var json = text.match(/callback\((.*?)\);$/);
+				                          eval('var data = ' + json[1]);
+                                          elem.label = data[0].systemname;
+                                      });
+        }
+    },
+
+    getPrefValue: function (elem) {
+        var prefId = elem.getAttribute("preference");
+        return document.getElementById(prefId).value;
+    },
+
+    setPrefValue: function (elem, value) {
+        var prefId = elem.getAttribute("preference");
+        document.getElementById(prefId).value = value;
     },
 
     removeLibrary: function (id) {
@@ -166,7 +191,6 @@ var CalilayPrefWindow = {
                 break;
             }
         }
-
     },
 
     addLibrary: function (id, name) {

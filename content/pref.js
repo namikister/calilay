@@ -3,7 +3,6 @@ var debug = Application.console.log;
 var CalilayPrefWindow = {
     cityData: null,
     appkey: '0f316d2b698c28451ed3f5f5223df15b',
-    maxNum: 1,
     ajaxGet: function (url, callback) {
         var req = new XMLHttpRequest();
         req.open('get', url, true);
@@ -16,17 +15,6 @@ var CalilayPrefWindow = {
         };
         req.send(null);
     },
-
-    // getPrefValue: function (index, key, defaultval) {
-    //     var name = "extensions.calilay.library" + index + "." + key;
-    //     var value = Application.prefs.getValue(name, defaultval);
-    //     return value;
-    // },
-
-    // setPrefValue: function (index, key, value) {
-    //     var name = "extensions.calilay.library" + index + "." + key;
-    //     Application.prefs.setValue(name, value);
-    // },
 
     onLoad: function () {
         CalilayPrefWindow.ajaxGet("http://calil.jp/city_list", function (text) {
@@ -41,10 +29,11 @@ var CalilayPrefWindow = {
         var pref;
         var prefSelect = document.getElementById("prefSelect");
         var newitem;
-        CalilayPrefWindow.removeChildren(prefSelect.menupopup);
+        CalilayPrefWindow.removeOptions(prefSelect.menupopup);
         for (pref in data) {
             prefSelect.appendItem(pref, pref);
         }
+//        prefSelect.selectedIndex = 0;
         CalilayPrefWindow.cityData = data;
     },
 
@@ -62,7 +51,7 @@ var CalilayPrefWindow = {
             document.getElementById("addButton").disabled = true;
             var cities = CalilayPrefWindow.cityData[prefSelect.selectedItem.label];
 	        var yindex = "あ,か,さ,た,な,は,ま,や,ら,わ".split(",");
-            CalilayPrefWindow.removeChildren(citySelect.menupopup);
+            CalilayPrefWindow.removeOptions(citySelect.menupopup);
             yindex.forEach(function (y) {
                                if (cities[y]) {
                                    cities[y].forEach(function (city) {
@@ -70,6 +59,7 @@ var CalilayPrefWindow = {
                                                      });
                                }
                            });
+//            citySelect.selectedIndex = 0;
             citySelect.focus();
         }
     },
@@ -97,13 +87,14 @@ var CalilayPrefWindow = {
                                  }
                              });
                 var systemSelect = document.getElementById("systemSelect");
-                CalilayPrefWindow.removeChildren(systemSelect.menupopup);
+                CalilayPrefWindow.removeOptions(systemSelect.menupopup);
                 systemSelect.disabled = false;
                 systemSelect.selectedItem = null;
                 var id;
                 for (id in systems) {
                     systemSelect.appendItem(systems[id], id);
                 }
+                systemSelect.selectedIndex = 0;
 	        } else {
 		        alert('図書館が見つかりませんでした。');
 	        }
@@ -121,23 +112,38 @@ var CalilayPrefWindow = {
         var selectedItem = systemSelect.selectedItem;
         var libraryList = document.getElementById("libraryList");
         var nodes = libraryList.childNodes;
-        var i, len = nodes.length;
+        var i, library, len = nodes.length;
+
         for (i = 0; i < len; i++) {
-            if (!CalilayPrefWindow.getPrefValue(nodes.item(i))) {
+            library = CalilayPrefWindow.getPrefValue(nodes.item(i));
+            if (library) {
+                if (library === selectedItem.value) {
+                    alert("既に同じ図書館が登録されています。");
+                    break;
+                }
+            }
+            else {
                 CalilayPrefWindow.setPrefValue(nodes.item(i), selectedItem.value);
                 nodes.item(i).label = selectedItem.label;
+                break;
             }
         }
+        if (i === len ) alert("これ以上図書館を追加できません。");
     },
 
     removeOnPush: function () {
         var libraryList = document.getElementById('libraryList');
-        var item = libraryList.selectedItem;
-        if (item === null) {
+        var node = libraryList.selectedItem;
+        if (node === null) {
             alert("削除対象が選択されていません。");
         } else {
-            CalilayPrefWindow.setPrefValue(item, "");
-            item.label = "";
+            for (; node !== null; node = node.nextSibling) {
+                CalilayPrefWindow.setPrefValue(node,
+                                               CalilayPrefWindow.getPrefValue(node.nextSibling));
+                CalilayPrefWindow.setPrefValue(node.nextSibling, "");
+                node.label = node.nextSibling.label;
+                node.nextSibling.label = "";
+            }
         }
     },
 
@@ -146,7 +152,7 @@ var CalilayPrefWindow = {
         removeButton.disabled = false;
     },
 
-    removeChildren: function (element) {
+    removeOptions: function (element) {
         while (element.firstChild) {
             element.removeChild(element.firstChild);   
         }
@@ -181,48 +187,6 @@ var CalilayPrefWindow = {
     setPrefValue: function (elem, value) {
         var prefId = elem.getAttribute("preference");
         document.getElementById(prefId).value = value;
-    },
-
-    removeLibrary: function (id) {
-        for (var i = 1; i <= CalilayPrefWindow.maxNum; i++) {
-            if (CalilayPrefWindow.getPrefValue(i, "enable", false) &&
-                id === CalilayPrefWindow.getPrefValue(i, "id", "")) {
-                CalilayPrefWindow.setPrefValue(i, "enable", false);
-                break;
-            }
-        }
-    },
-
-    addLibrary: function (id, name) {
-        var emptyIndex = 0;
-        if (isDuplicate(id)) {
-            alert("既に同じ図書館が登録されています。");
-            return;
-        }
-
-        for (var i = 1; i <= CalilayPrefWindow.maxNum; i++) {
-            if (!CalilayPrefWindow.getPrefValue(i, "enable", false)) {
-                emptyIndex = i;
-                break;
-            }
-        }
-        if (emptyIndex) {
-            CalilayPrefWindow.setPrefValue(i, "enable", true);
-            CalilayPrefWindow.setPrefValue(i, "id", id);
-            CalilayPrefWindow.setPrefValue(i, "name", name);
-        } else {
-            alert("これ以上図書館を追加できません。");
-        }
-
-        function isDuplicate(id) {
-            for (var i = 1; i <= CalilayPrefWindow.maxNum; i++) {
-                if (CalilayPrefWindow.getPrefValue(i, "enable", false) &&
-                    id === CalilayPrefWindow.getPrefValue(i, "id", "")) {
-                    return true;
-                }       
-            }
-            return false;
-        }
     }
 };
 window.addEventListener('load', CalilayPrefWindow.onLoad, false);

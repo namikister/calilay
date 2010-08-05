@@ -5,7 +5,7 @@
 * Copyright Yuta Namiki
 * For any bug or suggestion contact namikister@gmail.com
 * Version 0.1
-* Released under GPL 3.0
+* Released under GPL 2.0
 * 
 */
 

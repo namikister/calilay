@@ -17,24 +17,26 @@ var CalilayPrefWindow = {
     },
 
     onLoad: function () {
-        CalilayPrefWindow.ajaxGet("http://calil.jp/city_list", function (text) {
+        var url = "http://calil.jp/city_list";
+        CalilayPrefWindow.ajaxGet(url, function (text) {
                          var json = text.match(/loadcity\((.*?)\);$/);
 	                     eval('var data = ' + json[1]);
-	                     CalilayPrefWindow.loadCity(data);
+	                     loadCity(data);
                      });
         CalilayPrefWindow.refreshLibraryList();
-    },
 
-    loadCity: function (data) {
-        var pref;
-        var prefSelect = document.getElementById("prefSelect");
-        var newitem;
-        CalilayPrefWindow.removeOptions(prefSelect.menupopup);
-        for (pref in data) {
-            prefSelect.appendItem(pref, pref);
-        }
-//        prefSelect.selectedIndex = 0;
-        CalilayPrefWindow.cityData = data;
+        function loadCity(data) {
+            var pref;
+            var prefSelect = document.getElementById("prefSelect");
+            var newitem;
+            CalilayPrefWindow.removeOptions(prefSelect.menupopup);
+            for (pref in data) {
+                prefSelect.appendItem(pref, pref);
+            }
+            CalilayPrefWindow.cityData = data;
+            // prefSelect.selectedIndex = 0;
+            // CalilayPrefWindow.prefOnSelect();
+        };
     },
 
     prefOnSelect: function () {
@@ -44,11 +46,8 @@ var CalilayPrefWindow = {
 
         var selectedItem = prefSelect.selectedItem;
         if (selectedItem) {
-            citySelect.disabled = false;
             citySelect.selectedItem = null;
             systemSelect.selectedItem = null;
-            document.getElementById("systemSelect").disabled = true;
-            document.getElementById("addButton").disabled = true;
             var cities = CalilayPrefWindow.cityData[prefSelect.selectedItem.label];
 	        var yindex = "あ,か,さ,た,な,は,ま,や,ら,わ".split(",");
             CalilayPrefWindow.removeOptions(citySelect.menupopup);
@@ -59,7 +58,8 @@ var CalilayPrefWindow = {
                                                      });
                                }
                            });
-//            citySelect.selectedIndex = 0;
+            // citySelect.selectedIndex = 0;
+            // CalilayPrefWindow.cityOnSelect();
             citySelect.focus();
         }
     },
@@ -88,13 +88,13 @@ var CalilayPrefWindow = {
                              });
                 var systemSelect = document.getElementById("systemSelect");
                 CalilayPrefWindow.removeOptions(systemSelect.menupopup);
-                systemSelect.disabled = false;
                 systemSelect.selectedItem = null;
                 var id;
                 for (id in systems) {
                     systemSelect.appendItem(systems[id], id);
                 }
                 systemSelect.selectedIndex = 0;
+                CalilayPrefWindow.systemOnSelect();
 	        } else {
 		        alert('図書館が見つかりませんでした。');
 	        }
@@ -103,7 +103,6 @@ var CalilayPrefWindow = {
 
     systemOnSelect: function (selected) {
         var button = document.getElementById("addButton");
-        button.disabled = false;
         button.focus();
     },
 
@@ -121,8 +120,7 @@ var CalilayPrefWindow = {
                     alert("既に同じ図書館が登録されています。");
                     break;
                 }
-            }
-            else {
+            } else {
                 CalilayPrefWindow.setPrefValue(nodes.item(i), selectedItem.value);
                 nodes.item(i).label = selectedItem.label;
                 break;
@@ -169,6 +167,7 @@ var CalilayPrefWindow = {
 				setSystemName(id, nodes.item(i));
             }
         }
+
         function setSystemName(id, elem) {
 	        var url = 'http://api.calil.jp/library?appkey='+CalilayPrefWindow.appkey+'&format=json&systemid='+id;
             CalilayPrefWindow.ajaxGet(url, function (text) {
@@ -176,7 +175,7 @@ var CalilayPrefWindow = {
 				                          eval('var data = ' + json[1]);
                                           elem.label = data[0].systemname;
                                       });
-        }
+        };
     },
 
     getPrefValue: function (elem) {

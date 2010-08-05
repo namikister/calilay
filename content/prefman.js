@@ -1,5 +1,5 @@
 function calilay_PrefManager() {
-	var startPoint="calilay.";
+	var startPoint="extensions.calilay.";
 
 	var pref=Components.classes["@mozilla.org/preferences-service;1"].
 		getService(Components.interfaces.nsIPrefService).

@@ -30,11 +30,22 @@
      });
      isbnList = $.unique(isbnList);
 
+     var systemids = [];
+     var i, library = "";
+     for (i = 1; library !== null; i++) {
+         library = GM_getValue("library" + i, null);
+         if (library) {
+             systemids.push(library);
+             alert(library);
+         }
+     }
+
      var calil = new Calil({appkey: appkey,
 							render: new CalilRender(),
 							isbn: isbnList,
-							systemid: ["Tokyo_Setagaya", "Yamanashi_Oshino"]
+							systemid: systemids
                            });
+
      calil.search();
 
      GM_addCSS('chrome://calilay/content/calilapi.css');

@@ -4,7 +4,7 @@
     <em:id>{e2502f98-8bf2-11df-ade1-000c290539ce}</em:id>
     <em:name>calilay</em:name>
     <em:version>0.1</em:version>
-    <em:description>calilay overlay</em:description>
+    <em:description>Calilの検索結果をオーバーレイします。</em:description>
     <em:creator>Yuta Namiki</em:creator>
     <em:contributor>Greasemonkey Compiler by Anthony Lieuallen;</em:contributor>
     <em:contributor>http://arantius.com/</em:contributor>

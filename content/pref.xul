@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
-<prefwindow id="calilay.pref" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
-            title="calilay 図書館設定" bottons="accept,cancel">
+<prefwindow id="calilay.pref" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            title="Calilay 図書館設定" bottons="accept,cancel">
   <script type='application/x-javascript' src='pref.js'></script>
   <prefpane id="pref.general" label="">
     <preferences>
-      <preference id="library1" name="extensions.calilay.library1.id" type="string" />
-      <preference id="library2" name="extensions.calilay.library2.id" type="string" />
-      <preference id="library3" name="extensions.calilay.library3.id" type="string" />
-      <preference id="library4" name="extensions.calilay.library4.id" type="string" />
-      <preference id="library5" name="extensions.calilay.library5.id" type="string" />
+      <preference id="library1" name="extensions.calilay.library1" type="string"/>
+      <preference id="library2" name="extensions.calilay.library2" type="string"/>
+      <preference id="library3" name="extensions.calilay.library3" type="string"/>
+      <preference id="library4" name="extensions.calilay.library4" type="string"/>
+      <preference id="library5" name="extensions.calilay.library5" type="string"/>
     </preferences>
     <hbox>
     <vbox>
@@ -30,15 +30,15 @@
         <menupopup>
         </menupopup>
       </menulist>
-      <menulist id="citySelect" width="100" oncommand="CalilayPrefWindow.cityOnSelect();" disabled="true">
+      <menulist id="citySelect" width="100" oncommand="CalilayPrefWindow.cityOnSelect();">
         <menupopup>
         </menupopup>
       </menulist>
-      <menulist id="systemSelect" width="200" oncommand="CalilayPrefWindow.systemOnSelect();" disabled="true">
+      <menulist id="systemSelect" width="200" oncommand="CalilayPrefWindow.systemOnSelect();">
         <menupopup>
         </menupopup>
       </menulist>
-      <button id="addButton" label="追加" oncommand="CalilayPrefWindow.addOnPush();" disabled="true"/>
+      <button id="addButton" label="追加" oncommand="CalilayPrefWindow.addOnPush();"/>
     </hbox>
   </prefpane>
 </prefwindow>

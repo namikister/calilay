@@ -22,20 +22,21 @@
      });
      isbnList = $.unique(isbnList);
 
-     var systemids = [];
-     var i, library = "";
-     for (i = 1; library !== null; i++) {
-         library = GM_getValue("library" + i, null);
-         if (library) {
-             systemids.push(library);
-             alert(library);
+     var getSystemIds = function () {
+         var systemids = [];
+         var i, library = "";
+         for (i = 1; library !== null; i++) {
+             library = GM_getValue("library" + i, null);
+             if (library) {
+                 systemids.unshift(library);
+             }
          }
-     }
-
+         return systemids;
+     };
      var calil = new Calil({appkey: appkey,
-							render: new CalilRender(),
+							render: new CalilRender('recipe'),
 							isbn: isbnList,
-							systemid: systemids
+							systemid: getSystemIds()
                            });
 
      calil.search();

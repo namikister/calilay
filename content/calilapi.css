@@ -47,9 +47,23 @@
 	color:white;
 	padding: 2px;
 }
+.calil_status {
+    padding:0;
+    text-align:center;
+    white-space:nowrap;
+}
 .calil_libname {
-	color: white;
-	padding: 2px;
+    color: white;
+    padding: 2px;
+    -moz-border-radius:8px 8px 8px 8px;
+    background-color:#00ABFF;
+    float:left;
+    font-size:85%;
+    margin-bottom:8px;
+    margin-right:5px;
+    min-width:4em;
+    text-align:center;
+    white-space:nowrap;
 }
 .calil_libname a {
 	color: white;

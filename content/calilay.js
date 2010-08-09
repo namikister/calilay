@@ -12,16 +12,6 @@
 (function () {
      var appkey = '0f316d2b698c28451ed3f5f5223df15b';
      var isbnList = [];
-     $('.binder_data').each(function(i) {
-         var url = $('a[href^="http://www.amazon.co.jp/"]:first', this).attr('href');
-         if (url.match(/ASIN\/(\d+)/)) {
-             var isbn = RegExp.$1;
-             isbnList.push(isbn);
-             $(this).append('<div id="'+isbn+'"></div>');
-         }
-     });
-     isbnList = $.unique(isbnList);
-
      var getSystemIds = function () {
          var systemids = [];
          var i, library = "";
@@ -33,10 +23,27 @@
          }
          return systemids;
      };
+
+     var systemIds = getSystemIds();
+     var inner = "";
+     systemIds.forEach(function(systemId) {
+                           inner += '<div id="'+systemId+'"><div>'+systemId+'<span class="calil_system_status"></span></div><div class="prefix"></div></div>';
+                       });
+
+     $('.binder_data').each(function(i) {
+         var url = $('a[href^="http://www.amazon.co.jp/"]:first', this).attr('href');
+         if (url.match(/ASIN\/(\d+)/)) {
+             var isbn = RegExp.$1;
+             isbnList.push(isbn);
+             $(this).append('<div id="'+isbn+'">'+inner+'</div>');
+         }
+     });
+     isbnList = $.unique(isbnList);
+
      var calil = new Calil({appkey: appkey,
-							render: new CalilRender('recipe'),
+							render: new CalilRender('single'),
 							isbn: isbnList,
-							systemid: getSystemIds()
+							systemid: systemIds
                            });
 
      calil.search();

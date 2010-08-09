@@ -180,22 +180,31 @@ CalilRender.prototype =  {
 		}
 	},
 	start_render_books : function(isbn_list, systemid_list){
-		this.systemid_list = systemid_list;
-		for (var i in isbn_list){
-			this.init_abstract(isbn_list[i]);
-		}
+        if (this.render_mode == 'list'){
+		    this.systemid_list = systemid_list;
+		    for (var i in isbn_list){
+			    this.init_abstract(isbn_list[i]);
+		    }
+        }
 	},
 	render_books : function(data){
 		this.conti = data['continue'];
-		var isbn = '';
-		var systemid = '';
-		
+		var isbn;
+		var systemid;
+
 		for (isbn in data.books){
 			var csc = this.get_complete_systemid_count(data.books[isbn]);
 			for (systemid in data.books[isbn]){
 				if (this.filter_system_id == 'all' || this.filter_system_id == systemid){
-					var conti = (csc < this.systemid_list.length);
-					this.render_abstract(isbn,systemid,data.books[isbn][systemid], conti);
+                    switch (this.render_mode) {
+                    case 'single':
+                        this.render_detail(isbn,systemid,data.books[isbn][systemid]);
+                        break;
+                    case 'list':
+					    var conti = (csc < this.systemid_list.length);
+					    this.render_abstract(isbn,systemid,data.books[isbn][systemid], conti);
+                        break;
+                    }
 				}
 			}
 		}
@@ -250,6 +259,54 @@ CalilRender.prototype =  {
 	},
 	init_abstract : function(isbn){
 		$("#"+isbn).html('<div class="calil_searching">検索中</div>');
+	},
+	render_detail : function(isbn,systemid,data){
+		if (data.status == 'Running'){
+			return;
+		}
+		if (data.status == 'Error'){
+			if ($("#"+isbn)){
+				$("#"+systemid+" .calil_system_status").html("：検索失敗");
+				this.showSearchProgress();
+			}
+			return;
+		}
+		
+		var text = "";
+		var total_status = '蔵書なし';
+		for (var i in data.libkey) {
+		
+			var status = data.libkey[i];
+			var color = "red";
+			var bgcolor = "#AAAAAA";
+			var temp = this.get_color(status);
+			if (temp != ""){
+				color= "white";
+				bgcolor = temp;
+			}
+			if (status != "蔵書なし"){
+				total_status = "蔵書あり";
+			}
+			text += '<div class="calil_libname" style="color:'+ color + '; background-color:'+bgcolor+';">';
+			text += '<a href="http://api.calil.jp/library/search?s='+systemid+'&k='+encodeURIComponent(i)+'">' + i + '</a>';
+			text += '<div class="calil_status">';
+			text += status;
+			text += '</div>';
+			
+			text += '</div>';
+		}
+
+		if (data.reserveurl != "" && total_status != "蔵書なし"){
+			text += '<div style="clear:both">';
+			text += '<a href="'+data.reserveurl+'" target="_blank"><img border="0" src="http://gyazo.com/2064f557b8c17c879558165b0020ff5e.png"></a>';
+			text += '</div>';
+		}
+
+		if ($("#"+isbn)){
+			$("#"+isbn).find("#"+systemid+" .calil_system_status").html("："+total_status);
+			$("#"+isbn).find("#"+systemid+"> .prefix").html(text);
+		}
+
 	},
 	render_abstract : function (isbn,systemid,data, conti){
 		var text = "";

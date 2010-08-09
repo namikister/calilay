@@ -122,6 +122,8 @@ for f in ${xpi_contents}; do
 	cp -rp --parents ${f} xpi_temp
 done
 
+cp chrome.manifest.pack ./xpi_temp/
+
 cp -r content ./xpi_temp/
 cp -r locale ./xpi_temp/
 cp -r skin ./xpi_temp/

@@ -86,7 +86,7 @@ Calil.prototype = {
 		}
 		clearTimeout(this.api_timeout_timer);
 		this.api_timeout_timer = setTimeout(function(){
-			self.api_timeout(self.render);
+			self.api_timeout();
 		},10000);
 	},
 	callback : function(data){
@@ -108,6 +108,9 @@ Calil.prototype = {
 				self.call_api(newurl);
 			},seconds);
 		}
+        else {
+            this.api_timeout();
+        }
 
 		if(this.render){
 			this.render.render_books(data);
@@ -260,12 +263,14 @@ CalilRender.prototype =  {
 	init_abstract : function(isbn){
 		$("#"+isbn).html('<div class="calil_searching">検索中</div>');
 	},
+
 	render_detail : function(isbn,systemid,data){
 		if (data.status == 'Running'){
 			return;
 		}
 		if (data.status == 'Error'){
-			if ($("#"+isbn)){
+			if ($("#"+isbn) &&
+                $("#"+systemid+" .calil_system_status").html() === ":検索中") {
 				$("#"+systemid+" .calil_system_status").html("：検索失敗");
 				this.showSearchProgress();
 			}
@@ -292,7 +297,6 @@ CalilRender.prototype =  {
 			text += '<div class="calil_status">';
 			text += status;
 			text += '</div>';
-			
 			text += '</div>';
 		}
 
@@ -306,8 +310,8 @@ CalilRender.prototype =  {
 			$("#"+isbn).find("#"+systemid+" .calil_system_status").html("："+total_status);
 			$("#"+isbn).find("#"+systemid+"> .prefix").html(text);
 		}
-
 	},
+
 	render_abstract : function (isbn,systemid,data, conti){
 		var text = "";
 		var status = '蔵書なし';

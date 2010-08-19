@@ -27,7 +27,7 @@
      var systemIds = getSystemIds();
      var inner = "";
      systemIds.forEach(function(systemId) {
-                           inner += '<div id="'+systemId+'"><div>'+systemId+'<span class="calil_system_status"></span></div><div class="prefix"></div></div>';
+                           inner += '<div id="'+systemId+'" class="calil_libsys"><div>'+systemId+'<span class="calil_system_status">:検索中<img src="http://gae.calil.jp/public/img/run.gif"></span></div><div class="prefix"></div></div>';
                        });
 
      $('.binder_data').each(function(i) {
@@ -35,7 +35,7 @@
          if (url.match(/ASIN\/(\d+)/)) {
              var isbn = RegExp.$1;
              isbnList.push(isbn);
-             $(this).append('<div id="'+isbn+'">'+inner+'</div>');
+             $(this).append('<div id="'+isbn+'">'+inner+'<div class="calil_clear"></div></div>');
          }
      });
      isbnList = $.unique(isbnList);

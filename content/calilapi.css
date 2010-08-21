@@ -55,11 +55,10 @@
 }
 .calil_libname {
     color: white;
-    padding: 6px 5px;
+    padding: 2px 2px;
     -moz-border-radius:4px 4px 4px 4px;
     background-color:#00ABFF;
     float:left;
-    font-size:85%;
     margin-bottom:2px;
     margin-right:2px;
     min-width:3em;
@@ -72,6 +71,7 @@
     background-color:lightcyan;
     margin-right: 2px;
     margin-bottom: 2px;
+    font-size:0.7em;
     float: left;
 }
 

@@ -52,12 +52,12 @@ var CalilayPrefWindow = {
 	        var yindex = "あ,か,さ,た,な,は,ま,や,ら,わ".split(",");
             CalilayPrefWindow.removeOptions(citySelect.menupopup);
             yindex.forEach(function (y) {
-                               if (cities[y]) {
-                                   cities[y].forEach(function (city) {
-                                                         citySelect.appendItem(city, city);
-                                                     });
-                               }
-                           });
+                if (cities[y]) {
+                    cities[y].forEach(function (city) {
+                        citySelect.appendItem(city, city);
+                    });
+                }
+            });
             // citySelect.selectedIndex = 0;
             // CalilayPrefWindow.cityOnSelect();
             citySelect.focus();
@@ -82,10 +82,10 @@ var CalilayPrefWindow = {
             if (data.length > 0) {
 		        var systems = {};
                 data.forEach(function(elem){
-                                 if (typeof systems[elem.systemid] === 'undefined') {
-                                     systems[elem.systemid] = elem.systemname;
-                                 }
-                             });
+                    if (typeof systems[elem.systemid] === 'undefined') {
+                        systems[elem.systemid] = elem.systemname;
+                    }
+                });
                 var systemSelect = document.getElementById("systemSelect");
                 CalilayPrefWindow.removeOptions(systemSelect.menupopup);
                 systemSelect.selectedItem = null;
@@ -171,10 +171,10 @@ var CalilayPrefWindow = {
         function setSystemName(id, elem) {
 	        var url = 'http://api.calil.jp/library?appkey='+CalilayPrefWindow.appkey+'&format=json&systemid='+id;
             CalilayPrefWindow.ajaxGet(url, function (text) {
-				                          var json = text.match(/callback\((.*?)\);$/);
-				                          eval('var data = ' + json[1]);
-                                          elem.label = data[0].systemname;
-                                      });
+				var json = text.match(/callback\((.*?)\);$/);
+				eval('var data = ' + json[1]);
+                elem.label = data[0].systemname;
+            });
         };
     },
 

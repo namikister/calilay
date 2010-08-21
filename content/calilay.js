@@ -37,6 +37,7 @@
 		 });
      });
 
+     // Wait until all xmlhttprequests complete.
      var timer = setInterval(function () {
          if (counter >= systemIds.length) {
              clearInterval(timer);
@@ -45,29 +46,66 @@
      }, 20);
 
      function render() {
+         var isbnList = eval(renderer + '();');
+         if (isbnList) {
+             var calil = new Calil({appkey: appkey,
+							        render: new CalilRender('single'),
+							        isbn: isbnList,
+							        systemid: systemIds
+                                   });
+
+             calil.search();
+
+             GM_addCSS('chrome://calilay/content/calilapi.css');
+         }
+     }
+
+     function renderMediaMarker() {
          var isbnList = [];
          $('.binder_data').each(function(i) {
              var url = $('a[href^="http://www.amazon.co.jp/"]:first', this).attr('href');
              if (url.match(/ASIN\/(\d+)/)) {
                  var isbn = RegExp.$1;
                  isbnList.push(isbn);
-                 $(this).append('<div id="'+isbn+'">' +
-                                systemIds.map(function(systemId) {
-                                    return '<div id="'+systemId+'" class="calil_libsys"><div>'+systemNames[systemId]+'<span class="calil_system_status">:検索中<img src="http://gae.calil.jp/public/img/run.gif"></span></div><div class="prefix"></div></div>';
-                                }).join("") +
-                                '<div class="calil_clear"></div></div>');
+                 $(this).append(getInitialElement(isbn));
              }
          });
-         isbnList = $.unique(isbnList);
-
-         var calil = new Calil({appkey: appkey,
-							    render: new CalilRender('single'),
-							    isbn: isbnList,
-							    systemid: systemIds
-                               });
-
-         calil.search();
-
-         GM_addCSS('chrome://calilay/content/calilapi.css');
+         return $.unique(isbnList);
      }
+
+     function renderAmazonDetail() {
+         if (!window.location.href.match(/\/[dg]p\/(\d{10})\//)) return null;
+         var isbn = RegExp.$1;
+         var isbnList = [isbn];
+         $('#olpDivId').before(getInitialElement(isbn));
+         return isbnList;
+     }
+
+     function renderAmazonWishlist() {
+         var isbnList = [];
+         $('tbody.itemWrapper').each(function(i) {
+             if ($(this).attr('name').match(/\.(\d{10})/)) {
+                 var isbn = RegExp.$1;
+                 isbnList.push(isbn);
+                 $(this).find('td.lineItemMainInfo:first').append(getInitialElement(isbn));
+             }
+         });
+         return $.unique(isbnList);
+     }
+
+     function getInitialElement(isbn) {
+         var html = '<div id="'+isbn+'">' +
+                    systemIds.map(function(systemId) {
+						return '<div id="'+systemId+'" class="calil_libsys">' +
+							   '<div>' + systemNames[systemId] +
+							   '<span class="calil_system_status">:検索中' +
+							   '<img src="http://gae.calil.jp/public/img/run.gif">' +
+							   '</span>' +
+							   '</div>' +
+							   '<div class="prefix"></div>' +
+							   '</div>';
+					}).join("") +
+                    '<div class="calil_clear"></div></div>';
+         return html;
+     }     
 })();

@@ -43,16 +43,31 @@ isGreasemonkeyable: function(url) {
 	);
 },
 
+getCalilayRenderer: function(href) {
+    var pages = [
+        [/http:\/\/mediamarker\.net\/u\/.*\//,  "renderMediaMarker"],
+        [/http:\/\/www\.amazon\.co\.jp\/.*[dg]p\/\d{10}\//,  "renderAmazonDetail"],
+        [/http:\/\/www\.amazon\.co\.jp\/wishlist\//,  "renderAmazonWishlist"]
+    ];
+    for (var i = 0; i < pages.length; i++) {
+        if (pages[i][0].test(href)) {
+            return pages[i][1];
+        }
+    }
+    return null;
+},
+
 contentLoad: function(e) {
 	var unsafeWin=e.target.defaultView;
 	if (unsafeWin.wrappedJSObject) unsafeWin=unsafeWin.wrappedJSObject;
 
 	var unsafeLoc=new XPCNativeWrapper(unsafeWin, "location").location;
 	var href=new XPCNativeWrapper(unsafeLoc, "href").href;
+    var renderer = calilay_gmCompiler.getCalilayRenderer(href);
 
 	if (
 		calilay_gmCompiler.isGreasemonkeyable(href)
-		&& ( /http:\/\/mediamarker\.net\/u\/.*\//.test(href) )
+		&& renderer
 		&& true
 	) {
 		var script = "";
@@ -65,11 +80,11 @@ contentLoad: function(e) {
         script += calilay_gmCompiler.getUrlContents(
 			'chrome://calilay/content/calilay.js'
 		);
-		calilay_gmCompiler.injectScript(script, href, unsafeWin);
+		calilay_gmCompiler.injectScript(script, href, unsafeWin, renderer);
 	}
 },
 
-injectScript: function(script, url, unsafeContentWin) {
+injectScript: function(script, url, unsafeContentWin, renderer) {
 	var sandbox, logger, xmlhttpRequester;
 	var safeWin=new XPCNativeWrapper(unsafeContentWin);
 
@@ -83,6 +98,7 @@ injectScript: function(script, url, unsafeContentWin) {
 	sandbox.window=safeWin;
 	sandbox.document=sandbox.window.document;
 	sandbox.unsafeWindow=unsafeContentWin;
+    sandbox.renderer = renderer;
 
 	// patch missing properties on xpcnw
 	sandbox.XPathResult=Components.interfaces.nsIDOMXPathResult;

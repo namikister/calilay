@@ -301,8 +301,8 @@ CalilRender.prototype =  {
 		}
 
 		if (data.reserveurl != "" && total_status != "蔵書なし"){
-			text += '<div style="clear:both">';
-			text += '<a href="'+data.reserveurl+'" target="_blank"><img border="0" src="http://gyazo.com/2064f557b8c17c879558165b0020ff5e.png"></a>';
+			text += '<div class="calil_reserve">';
+			text += '<a href="'+data.reserveurl+'" target="_blank">予約する</a>';
 			text += '</div>';
 		}
 

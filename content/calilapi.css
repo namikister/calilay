@@ -66,8 +66,30 @@
     white-space:nowrap;
 }
 
+.calil_reserve {
+    float:left;
+    height: 100%;
+    text-align:center;
+    padding:2px 5px 2px;
+    margin-bottom:2px;
+    margin-right:2px;
+}
+
+.calil_reserve a{
+    color: white;
+    -moz-border-radius:4px 4px 4px 4px;
+    border:1px solid #BFB700;
+    background: -moz-linear-gradient(center top , #F9F900, #BFB700);
+    -moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);
+    text-decoration:none;
+    padding:2px 5px 2px;
+    text-shadow:0 1px 1px rgba(0, 0, 0, 0.3);
+    text-align:center;
+    font-size:1.2em;
+}
+
 .calil_libsys {
-    -moz-border-radius:8px 8px 8px 8px;
+    -moz-border-radius:4px 4px 4px 4px;
     background-color:lightcyan;
     margin-right: 2px;
     margin-bottom: 2px;

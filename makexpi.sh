@@ -122,7 +122,7 @@ for f in ${xpi_contents}; do
 	cp -rp --parents ${f} xpi_temp
 done
 
-cp chrome.manifest.pack ./xpi_temp/
+cp chrome.manifest.pack ./xpi_temp/chrome.manifest
 
 cp -r content ./xpi_temp/
 cp -r locale ./xpi_temp/

@@ -16,7 +16,7 @@
          for (i = 1; library !== null; i++) {
              library = GM_getValue("library" + i, null);
              if (library) {
-                 systemids.unshift(library);
+                 systemids.push(library);
              }
          }
          return systemids;

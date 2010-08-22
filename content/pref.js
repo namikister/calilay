@@ -2,6 +2,18 @@ var debug = Application.console.log;
 
 var CalilayPrefWindow = {
     cityData: null,
+    prefectures: [
+        '北海道', '青森県', '岩手県', '宮城県', '秋田県',
+        '山形県', '福島県', '茨城県', '栃木県', '群馬県',
+        '埼玉県', '千葉県', '東京都', '神奈川県', '新潟県',
+        '富山県', '石川県', '福井県', '山梨県', '長野県',
+        '岐阜県', '静岡県', '愛知県', '三重県', '滋賀県',
+        '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県',
+        '鳥取県', '島根県', '岡山県', '広島県', '山口県',
+        '徳島県', '香川県', '愛媛県', '高知県', '福岡県',
+        '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県',
+        '鹿児島県', '沖縄県'
+    ],
     appkey: '0f316d2b698c28451ed3f5f5223df15b',
     ajaxGet: function (url, callback) {
         var req = new XMLHttpRequest();
@@ -30,9 +42,9 @@ var CalilayPrefWindow = {
             var prefSelect = document.getElementById("prefSelect");
             var newitem;
             CalilayPrefWindow.removeOptions(prefSelect.menupopup);
-            for (pref in data) {
+            CalilayPrefWindow.prefectures.forEach(function (pref) {
                 prefSelect.appendItem(pref, pref);
-            }
+            });
             CalilayPrefWindow.cityData = data;
             // prefSelect.selectedIndex = 0;
             // CalilayPrefWindow.prefOnSelect();
@@ -132,15 +144,20 @@ var CalilayPrefWindow = {
     removeOnPush: function () {
         var libraryList = document.getElementById('libraryList');
         var node = libraryList.selectedItem;
-        if (node === null) {
+        if (node === null || node.label === "") {
             alert("削除対象が選択されていません。");
         } else {
             for (; node !== null; node = node.nextSibling) {
-                CalilayPrefWindow.setPrefValue(node,
-                                               CalilayPrefWindow.getPrefValue(node.nextSibling));
-                CalilayPrefWindow.setPrefValue(node.nextSibling, "");
-                node.label = node.nextSibling.label;
-                node.nextSibling.label = "";
+                if (node.nextSibling) {
+                    CalilayPrefWindow.setPrefValue(node, CalilayPrefWindow.getPrefValue(node.nextSibling));
+                    CalilayPrefWindow.setPrefValue(node.nextSibling, "");
+                    node.label = node.nextSibling.label;
+                    node.nextSibling.label = "";
+                }
+                else {
+                    CalilayPrefWindow.setPrefValue(node, "");
+                    node.label = "";
+                }
             }
         }
     },

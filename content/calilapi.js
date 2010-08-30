@@ -68,7 +68,7 @@ Calil.prototype = {
 				url:url,
 				onload:function(data){
 					var json = data.responseText.match(/callback\((.*?)\)/);
-					eval('var data = ' + json[1]);
+					data = JSON.parse(json[1]);
 					self.callback(data);
 				}
 			});
@@ -512,7 +512,7 @@ CalilCitySelectDlg.prototype = {
 				url:url,
 				onload:function(data){
 					var json = data.responseText.match(/loadcity\((.*?)\);$/);
-					eval('var data = ' + json[1]);
+					data = JSON.parse(json[1]);
 					self.loadcity(data);
 				}
 			});
@@ -584,7 +584,7 @@ CalilCitySelectDlg.prototype = {
 				url:url,
 				onload:function(data){
 					var json = data.responseText.match(/callback\((.*?)\);$/);
-					eval('var data = ' + json[1]);
+					data = JSON.parse(json[1]);
 					self.set_systemid(data, raw_pref);
 				}
 			});

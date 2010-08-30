@@ -30,7 +30,7 @@
 			 url: 'http://api.calil.jp/library?appkey='+appkey+'&format=json&systemid='+id,
 			 onload:function(data){
                  var json = data.responseText.match(/callback\((.*?)\);$/);
-			     eval('var data = ' + json[1]);
+			     data = JSON.parse(json[1]);
                  systemNames[id] = data[0].systemname;
                  counter++;
              }

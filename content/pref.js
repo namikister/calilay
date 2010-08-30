@@ -32,7 +32,7 @@ var CalilayPrefWindow = {
         var url = "http://calil.jp/city_list";
         CalilayPrefWindow.ajaxGet(url, function (text) {
                          var json = text.match(/loadcity\((.*?)\);$/);
-	                     eval('var data = ' + json[1]);
+	                     var data = JSON.parse(json[1]);
 	                     loadCity(data);
                      });
         CalilayPrefWindow.refreshLibraryList();
@@ -86,7 +86,7 @@ var CalilayPrefWindow = {
 	    var url = 'http://api.calil.jp/library?appkey='+CalilayPrefWindow.appkey+'&format=json&pref='+pref+'&city='+city;
         CalilayPrefWindow.ajaxGet(url, function (text) {
 				         var json = text.match(/callback\((.*?)\);$/);
-				         eval('var data = ' + json[1]);
+				         var data = JSON.parse(json[1]);
 				         setLibrary(data, pref, city);
                      });
 
@@ -189,7 +189,7 @@ var CalilayPrefWindow = {
 	        var url = 'http://api.calil.jp/library?appkey='+CalilayPrefWindow.appkey+'&format=json&systemid='+id;
             CalilayPrefWindow.ajaxGet(url, function (text) {
 				var json = text.match(/callback\((.*?)\);$/);
-				eval('var data = ' + json[1]);
+				var data = JSON.parse(json[1]);
                 elem.label = data[0].systemname;
             });
         };

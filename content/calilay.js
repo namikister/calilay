@@ -4,7 +4,7 @@
  * Showing results of library searching using calil api.
  * Copyright Yuta Namiki
  * For any bug or suggestion contact namikister@gmail.com
- * Released under GPL 2.0
+ * Released under MIT
  * 
  */
 (function () {
@@ -37,63 +37,7 @@
 		 });
      });
 
-     // Wait until all xmlhttprequests complete.
-     var timer = setInterval(function () {
-         if (counter >= systemIds.length) {
-             clearInterval(timer);
-             render();
-         }
-     }, 20);
-
-     function render() {
-         var isbnList = eval(renderer + '();');
-         if (isbnList) {
-             var calil = new Calil({appkey: appkey,
-							        render: new CalilRender('single'),
-							        isbn: isbnList,
-							        systemid: systemIds
-                                   });
-
-             calil.search();
-
-             GM_addCSS('chrome://calilay/content/calilapi.css');
-         }
-     }
-
-     function renderMediaMarker() {
-         var isbnList = [];
-         $('.binder_data').each(function(i) {
-             var url = $('a[href^="http://www.amazon.co.jp/"]:first', this).attr('href');
-             if (url.match(/ASIN\/(\d+)/)) {
-                 var isbn = RegExp.$1;
-                 isbnList.push(isbn);
-                 $(this).append(getInitialElement(isbn));
-             }
-         });
-         return $.unique(isbnList);
-     }
-
-     function renderAmazonDetail() {
-         if (!window.location.href.match(/\/[dg]p\/(\d{10})\//)) return null;
-         var isbn = RegExp.$1;
-         var isbnList = [isbn];
-         $('#olpDivId').before(getInitialElement(isbn));
-         return isbnList;
-     }
-
-     function renderAmazonWishlist() {
-         var isbnList = [];
-         $('tbody.itemWrapper').each(function(i) {
-             if ($(this).attr('name').match(/\.(\d{10})/)) {
-                 var isbn = RegExp.$1;
-                 isbnList.push(isbn);
-                 $(this).find('td.lineItemMainInfo:first').append(getInitialElement(isbn));
-             }
-         });
-         return $.unique(isbnList);
-     }
-
-     function getInitialElement(isbn) {
+     function createInitialElement(isbn) {
          var html = '<div id="'+isbn+'">' +
                     systemIds.map(function(systemId) {
 						return '<div id="'+systemId+'" class="calil_libsys">' +
@@ -108,4 +52,62 @@
                     '<div class="calil_clear"></div></div>';
          return html;
      }     
+
+     var renderFunctions = {
+         renderMediaMarker: function () {
+             var isbnList = [];
+             $('.binder_data').each(function(i) {
+                 var url = $('a[href^="http://www.amazon.co.jp/"]:first', this).attr('href');
+                 if (url.match(/ASIN\/(\d+)/)) {
+                     var isbn = RegExp.$1;
+                     isbnList.push(isbn);
+                     $(this).append(createInitialElement(isbn));
+                 }
+             });
+             return $.unique(isbnList);
+         },
+
+         renderAmazonDetail: function () {
+             if (!window.location.href.match(/\/[dg]p\/(\d{10})\//)) return null;
+             var isbn = RegExp.$1;
+             var isbnList = [isbn];
+             $('#olpDivId').before(createInitialElement(isbn));
+             return isbnList;
+         },
+     
+         renderAmazonWishlist: function () {
+             var isbnList = [];
+             $('tbody.itemWrapper').each(function(i) {
+                 if ($(this).attr('name').match(/\.(\d{10})/)) {
+                     var isbn = RegExp.$1;
+                     isbnList.push(isbn);
+                     $(this).find('td.lineItemMainInfo:first').append(createInitialElement(isbn));
+                 }
+             });
+             return $.unique(isbnList);
+         }
+     };
+
+     function render() {
+         var isbnList = renderFunctions[renderer]();
+         if (isbnList) {
+             var calil = new Calil({appkey: appkey,
+							        render: new CalilRender('single'),
+							        isbn: isbnList,
+							        systemid: systemIds
+                                   });
+
+             calil.search();
+
+             GM_addCSS('chrome://calilay/content/calilapi.css');
+         }
+     }
+
+     // Wait until all xmlhttprequests complete.
+     var timer = setInterval(function () {
+         if (counter >= systemIds.length) {
+             clearInterval(timer);
+             render();
+         }
+     }, 20);
 })();

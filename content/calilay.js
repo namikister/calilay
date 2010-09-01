@@ -4,7 +4,7 @@
  * Showing results of library searching using calil api.
  * Copyright Yuta Namiki
  * For any bug or suggestion contact namikister@gmail.com
- * Released under MIT
+ * Released under BSD
  * 
  */
 (function () {

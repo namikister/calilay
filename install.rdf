@@ -3,7 +3,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>{e2502f98-8bf2-11df-ade1-000c290539ce}</em:id>
     <em:name>Calilay</em:name>
-    <em:version>0.12</em:version>
+    <em:version>0.11</em:version>
     <em:description>Calilの検索結果をオーバーレイします。</em:description>
     <em:creator>Yuta Namiki</em:creator>
     <em:contributor>Greasemonkey Compiler by Anthony Lieuallen;</em:contributor>

@@ -46,7 +46,7 @@ isGreasemonkeyable: function(url) {
 getCalilayRenderer: function(href) {
     var pages = [
         [/http:\/\/mediamarker\.net\/u\/.*\//,  "renderMediaMarker"],
-        [/http:\/\/www\.amazon\.co\.jp\/.*[dg]p\/\d{10}\//,  "renderAmazonDetail"],
+        [/http:\/\/www\.amazon\.co\.jp\/.*[dg]p\/[\dX]{10}/,  "renderAmazonDetail"],
         [/http:\/\/www\.amazon\.co\.jp\/(.*\/)?wishlist\//,  "renderAmazonWishlist"]
     ];
     for (var i = 0; i < pages.length; i++) {

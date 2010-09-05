@@ -68,10 +68,9 @@
          },
 
          renderAmazonDetail: function () {
-             if (!window.location.href.match(/\/[dg]p\/(\d{10})\//)) return null;
-             var isbn = RegExp.$1;
+             var isbn = document.getElementById('ASIN').value;
              var isbnList = [isbn];
-             $('#olpDivId').before(createInitialElement(isbn));
+             $('#olpDivId').after(createInitialElement(isbn));
              return isbnList;
          },
      

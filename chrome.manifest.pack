@@ -1,2 +1,3 @@
 content	calilay	jar:chrome/calilay.jar!/content/
 overlay	chrome://browser/content/browser.xul	chrome://calilay/content/script-compiler-overlay.xul
+skin calilay classic/1.0 jar:chrome/calilay.jar!/skin/classic/

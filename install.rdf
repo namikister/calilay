@@ -4,11 +4,12 @@
     <em:id>{e2502f98-8bf2-11df-ade1-000c290539ce}</em:id>
     <em:name>Calilay</em:name>
     <em:version>0.11</em:version>
-    <em:description>Calilの検索結果をオーバーレイします。</em:description>
+    <em:description>登録した図書館の蔵書検索の結果を対応サイト上にオーバーレイします。</em:description>
     <em:creator>Yuta Namiki</em:creator>
     <em:contributor>Greasemonkey Compiler by Anthony Lieuallen;</em:contributor>
     <em:contributor>http://arantius.com/</em:contributor>
-    <em:homepageURL>http://github.com/namikister/calilay</em:homepageURL>
+    <em:homepageURL>http://sites.google.com/site/calilay/</em:homepageURL>
+    <em:iconURL>chrome://calilay/skin/calilay32.png</em:iconURL>
     <em:targetApplication><Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>3.0</em:minVersion>

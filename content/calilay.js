@@ -1,5 +1,5 @@
 /**
- * Calilay
+ * Calilay 図書館蔵書検索
  * 
  * Showing results of library searching using calil api.
  * Copyright Yuta Namiki
@@ -38,7 +38,7 @@
      });
 
      function createInitialElement(isbn) {
-         var html = '<div id="'+isbn+'">' +
+         var html = '<div id="'+isbn+'" class="calilay">' +
                     systemIds.map(function(systemId) {
 						return '<div id="'+systemId+'" class="calil_libsys">' +
 							   '<div>' + systemNames[systemId] +
@@ -56,7 +56,7 @@
      var renderFunctions = {
          renderMediaMarker: function () {
              var isbnList = [];
-             $('.binder_data').each(function(i) {
+             $('.binder_data').not('div:has(div.calilay)').each(function(i) {
                  var url = $('a[href^="http://www.amazon.co.jp/"]:first', this).attr('href');
                  if (url.match(/ASIN\/(\d+)/)) {
                      var isbn = RegExp.$1;
@@ -76,7 +76,7 @@
      
          renderAmazonWishlist: function () {
              var isbnList = [];
-             $('tbody.itemWrapper').each(function(i) {
+             $('tbody.itemWrapper').not('div:has(div.calilay)').each(function(i) {
                  if ($(this).attr('name').match(/\.(\d{10})/)) {
                      var isbn = RegExp.$1;
                      isbnList.push(isbn);
@@ -97,16 +97,24 @@
                                    });
 
              calil.search();
-
-             GM_addCSS('chrome://calilay/content/calilapi.css');
          }
      }
 
      // Wait until all xmlhttprequests complete.
-     var timer = setInterval(function () {
+     var watchCounter = setInterval(function () {
          if (counter >= systemIds.length) {
-             clearInterval(timer);
+             clearInterval(watchCounter);
              render();
+             GM_addCSS('chrome://calilay/content/calilapi.css');
          }
      }, 20);
+
+     // following lines are for using this extension with AutoPager.
+     var previousTimer;
+     document.addEventListener("AutoPagerAfterInsert", function (e) {
+                                   clearTimeout(previousTimer);
+                                   previousTimer = setTimeout(function() {
+                                       render();
+                                   }, 10);
+                               }, false);
 })();

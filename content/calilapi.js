@@ -158,7 +158,9 @@ CalilRender.prototype =  {
 		var i = 0;
 		if (this.render_mode == 'single'){
 			$(".calil_system_status").each(function(){
-				$(this).html('：タイムアウト');
+                if ($(this).html() === ":検索中") {
+			        $(this).html('：タイムアウト');
+                }
 			});
 		}else if (this.render_mode == 'list'){
 			$(".calil_searching").each(function(){

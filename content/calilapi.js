@@ -158,7 +158,7 @@ CalilRender.prototype =  {
 		var i = 0;
 		if (this.render_mode == 'single'){
 			$(".calil_system_status").each(function(){
-                if ($(this).html() === ":検索中") {
+                if ($(this).text() === ":検索中") {
 			        $(this).html('：タイムアウト');
                 }
 			});
@@ -272,7 +272,7 @@ CalilRender.prototype =  {
 		}
 		if (data.status == 'Error'){
 			if ($("#"+isbn) &&
-                $("#"+systemid+" .calil_system_status").html() === ":検索中") {
+                $("#"+systemid+" .calil_system_status").text() === ":検索中") {
 				$("#"+systemid+" .calil_system_status").html("：検索失敗");
 				this.showSearchProgress();
 			}

@@ -1,44 +1,49 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 <prefwindow id="calilay.pref" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-            title="Calilay 図書館設定" bottons="accept,cancel">
+            title="Calilay 図書館設定" bottons="accept,cancel"
+            windowType="Calilay:Config">
   <script type='application/x-javascript' src='pref.js'></script>
   <prefpane id="pref.general" label="">
     <preferences>
-      <preference id="library1" name="extensions.calilay.library1" type="string"/>
-      <preference id="library2" name="extensions.calilay.library2" type="string"/>
-      <preference id="library3" name="extensions.calilay.library3" type="string"/>
-      <preference id="library4" name="extensions.calilay.library4" type="string"/>
-      <preference id="library5" name="extensions.calilay.library5" type="string"/>
+      <preference id="pref.library1" name="extensions.calilay.library1" type="string"/>
+      <preference id="pref.library2" name="extensions.calilay.library2" type="string"/>
+      <preference id="pref.library3" name="extensions.calilay.library3" type="string"/>
+      <preference id="pref.library4" name="extensions.calilay.library4" type="string"/>
+      <preference id="pref.library5" name="extensions.calilay.library5" type="string"/>
+      <preference id="pref.enabled" name="extensions.calilay.enabled"  type="bool"/>
     </preferences>
-    <hbox>
     <vbox>
-      <listbox id="libraryList" rows="5" onselect="CalilayPrefWindow.librarySelected();">
-        <listitem preference="library1"/>
-        <listitem preference="library2"/>
-        <listitem preference="library3"/>
-        <listitem preference="library4"/>
-        <listitem preference="library5"/>
-      </listbox>
+      <checkbox id="enabledCheckBox" label="有効にする" preference="pref.enabled" />
+      <hbox>
+        <vbox>
+          <listbox id="libraryList" rows="5" onselect="CalilayPrefWindow.librarySelected();">
+            <listitem preference="pref.library1"/>
+            <listitem preference="pref.library2"/>
+            <listitem preference="pref.library3"/>
+            <listitem preference="pref.library4"/>
+            <listitem preference="pref.library5"/>
+          </listbox>
+        </vbox>
+        <vbox>
+          <button id="removeButton" label="削除" oncommand="CalilayPrefWindow.removeOnPush();" disabled="true"/>
+        </vbox>
+      </hbox>
+      <hbox>
+        <menulist id="prefSelect" width="100" oncommand="CalilayPrefWindow.prefOnSelect();">
+          <menupopup>
+          </menupopup>
+        </menulist>
+        <menulist id="citySelect" width="100" oncommand="CalilayPrefWindow.cityOnSelect();">
+          <menupopup>
+          </menupopup>
+        </menulist>
+        <menulist id="systemSelect" width="200" oncommand="CalilayPrefWindow.systemOnSelect();">
+          <menupopup>
+          </menupopup>
+        </menulist>
+        <button id="addButton" label="追加" oncommand="CalilayPrefWindow.addOnPush();"/>
+      </hbox>
     </vbox>
-    <vbox>
-      <button id="removeButton" label="削除" oncommand="CalilayPrefWindow.removeOnPush();" disabled="true"/>
-    </vbox>
-    </hbox>
-    <hbox>
-      <menulist id="prefSelect" width="100" oncommand="CalilayPrefWindow.prefOnSelect();">
-        <menupopup>
-        </menupopup>
-      </menulist>
-      <menulist id="citySelect" width="100" oncommand="CalilayPrefWindow.cityOnSelect();">
-        <menupopup>
-        </menupopup>
-      </menulist>
-      <menulist id="systemSelect" width="200" oncommand="CalilayPrefWindow.systemOnSelect();">
-        <menupopup>
-        </menupopup>
-      </menulist>
-      <button id="addButton" label="追加" oncommand="CalilayPrefWindow.addOnPush();"/>
-    </hbox>
   </prefpane>
 </prefwindow>

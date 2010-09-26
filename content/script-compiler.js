@@ -245,6 +245,33 @@ calilay_ScriptStorage.prototype.getValue = function(name, defVal) {
 	return this.prefMan.getValue(name, defVal);
 }
 
+var calilay = {
+    openConfig: function() {
+        var getWindow = function(type) {
+            var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                               .getService(Components.interfaces.nsIWindowMediator);
+            return windowManager.getMostRecentWindow(type);
+        };
+        var opened = getWindow("Calilay:Config");
+        if (opened) {
+            opened.focus();            
+        }
+        else {
+            window.openDialog("chrome://calilay/content/pref.xul",
+                              "CalilayConfig",
+                              "chrome,titlebar,toolbar,centerscreen,resizable,scrollbars");
+        }
+    },
+    toggleStatus: function(event) {
+        if (event.button !== 0) return; // not left click
+        calilay.setStatusbarIcon(false);
+    },
+    setStatusbarIcon: function (on) {
+        var icon = document.getElementById("calilay-statusbar-icon");
+        var source = "chrome://calilay/skin/" + (on ? "calilay16.png": "calilay16_off.png");
+        icon.setAttribute("src", source);
+    }
+};
 
 window.addEventListener('load', calilay_gmCompiler.onLoad, false);
 window.addEventListener('unload', calilay_gmCompiler.onUnLoad, false);

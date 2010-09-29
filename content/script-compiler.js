@@ -246,6 +246,7 @@ calilay_ScriptStorage.prototype.getValue = function(name, defVal) {
 }
 
 var calilay = {
+    prefMan: new calilay_PrefManager(),
     openConfig: function() {
         var getWindow = function(type) {
             var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"]
@@ -264,7 +265,9 @@ var calilay = {
     },
     toggleStatus: function(event) {
         if (event.button !== 0) return; // not left click
-        calilay.setStatusbarIcon(false);
+        var enabled = calilay.prefMan.getValue("enabled");
+        calilay.prefMan.setValue("enabled", !enabled);
+        calilay.setStatusbarIcon(!enabled);
     },
     setStatusbarIcon: function (on) {
         var icon = document.getElementById("calilay-statusbar-icon");

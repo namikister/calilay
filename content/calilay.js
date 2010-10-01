@@ -8,6 +8,8 @@
  * 
  */
 (function () {
+     if (!GM_getValue("enabled")) return;
+
      var appkey = '0f316d2b698c28451ed3f5f5223df15b';
 
      var systemIds = (function () {

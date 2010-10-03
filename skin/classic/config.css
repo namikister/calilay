@@ -1,0 +1,27 @@
+.link {
+    text-decoration : underline;
+    color           : #0241ac;
+    cursor          : pointer;
+}
+
+.link:hover, .link:active {
+    color : #3375e3;
+}
+
+#special-thanks {
+    padding : 10px;
+}
+
+#special-thanks:before {
+    font-weight : bold;
+    content     : "Special Thanks";
+    text-align  : center;
+    display     : block;
+}
+
+#addon-name {
+    font-family  : "Gill Sans", Helvetica, Arial, sans-serif;
+    font-variant : small-caps;
+    font-size    : 130%;
+    font-weight  : bold;
+}

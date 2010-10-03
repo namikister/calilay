@@ -1,10 +1,15 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://mozapps/content/preferences/preferences.css"?>
+<?xml-stylesheet href="chrome://browser/skin/preferences/preferences.css"?>
+<?xml-stylesheet href="chrome://calilay/skin/config.css" type="text/css"?>
 <prefwindow id="calilay.pref" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-            title="Calilay 図書館設定" bottons="accept,cancel"
+            title="Calilay 図書館設定" buttons="accept,cancel"
             windowType="Calilay:Config">
   <script type='application/x-javascript' src='pref.js'></script>
-  <prefpane id="pref.general" label="">
+  <prefpane id="pref.general"
+            label="一般"
+            image="chrome://calilay/skin/config.png">
     <preferences>
       <preference id="pref.library1" name="extensions.calilay.library1" type="string"/>
       <preference id="pref.library2" name="extensions.calilay.library2" type="string"/>
@@ -45,5 +50,23 @@
         <button id="addButton" label="追加" oncommand="CalilayPrefWindow.addOnPush();"/>
       </hbox>
     </vbox>
+  </prefpane>
+  <prefpane id="pref.about"
+            label="情報"
+            image="chrome://calilay/skin/help.png">
+    <preferences></preferences>
+    <hbox>
+      <spacer flex="1"/>
+      <image src="chrome://calilay/skin/calilay64.png" />
+      <vbox align="center" flex="1">
+        <description id="addon-name">Calilay</description>
+        <description class="copyright">namikister &lt;namikister@gmail.com&gt; &#169; 2010</description>
+        <label href="http://sites.google.com/site/calilay/"
+               value="http://sites.google.com/site/calilay/"
+               class="text-link plain">
+        </label>
+      </vbox>
+      <spacer flex="1"/>
+    </hbox>
   </prefpane>
 </prefwindow>

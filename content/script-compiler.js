@@ -258,7 +258,7 @@ var calilay = {
             opened.focus();            
         }
         else {
-            window.openDialog("chrome://calilay/content/pref.xul",
+            window.openDialog("chrome://calilay/content/config.xul",
                               "CalilayConfig",
                               "chrome,titlebar,toolbar,centerscreen,resizable,scrollbars");
         }

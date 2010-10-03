@@ -6,7 +6,7 @@
 <prefwindow id="calilay.pref" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
             title="Calilay 図書館設定" buttons="accept,cancel"
             windowType="Calilay:Config">
-  <script type='application/x-javascript' src='pref.js'></script>
+  <script type='application/x-javascript' src='config.js'></script>
   <prefpane id="pref.general"
             label="一般"
             image="chrome://calilay/skin/config.png">

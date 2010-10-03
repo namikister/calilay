@@ -230,7 +230,7 @@ onUnLoad: function() {
 	window.removeEventListener('unload', calilay_gmCompiler.onUnLoad, false);
 	window.document.getElementById("appcontent")
 		.removeEventListener("DOMContentLoaded", calilay_gmCompiler.contentLoad, false);
-},
+}
 
 }; //object calilay_gmCompiler
 
@@ -240,12 +240,12 @@ function calilay_ScriptStorage() {
 }
 calilay_ScriptStorage.prototype.setValue = function(name, val) {
 	this.prefMan.setValue(name, val);
-}
+};
 calilay_ScriptStorage.prototype.getValue = function(name, defVal) {
 	return this.prefMan.getValue(name, defVal);
-}
+};
 
-var calilay = {
+var calilay_statusbar = {
     prefMan: new calilay_PrefManager(),
     openConfig: function() {
         var getWindow = function(type) {
@@ -263,16 +263,32 @@ var calilay = {
                               "chrome,titlebar,toolbar,centerscreen,resizable,scrollbars");
         }
     },
-    toggleStatus: function(event) {
-        if (event.button !== 0) return; // not left click
-        var enabled = calilay.prefMan.getValue("enabled");
-        calilay.prefMan.setValue("enabled", !enabled);
-        calilay.setStatusbarIcon(!enabled);
+    toggleStatus: function (event) {
+        if (event.button !== undefined &&
+            event.button !== 0) return; // not left click
+        var enabled = calilay_statusbar.prefMan.getValue("enabled");
+        calilay_statusbar.prefMan.setValue("enabled", !enabled);
+        calilay_statusbar.setStatusbarIcon(!enabled);
+        calilay_statusbar.setMenuToggleStatus(!enabled);
+        calilay_gmCompiler.contentLoad(event);
+    },
+    initStatusbarIcon: function (event) {
+        var enabled = calilay_statusbar.prefMan.getValue("enabled");
+        calilay_statusbar.setStatusbarIcon(enabled);
+    },
+    initMenuitems: function (event) {
+        var enabled = calilay_statusbar.prefMan.getValue("enabled");
+        calilay_statusbar.setMenuToggleStatus(enabled);
     },
     setStatusbarIcon: function (on) {
         var icon = document.getElementById("calilay-statusbar-icon");
-        var source = "chrome://calilay/skin/" + (on ? "calilay16.png": "calilay16_off.png");
+        var source = "chrome://calilay/skin/" + (on ? "calilay16.png" : "calilay16_off.png");
         icon.setAttribute("src", source);
+    },
+    setMenuToggleStatus: function (on) {
+        var menuitem = document.getElementById("calilay-menu-toggle-status");
+        var label = on ? "無効にする" : "有効にする";
+        menuitem.setAttribute("label", label);
     }
 };
 

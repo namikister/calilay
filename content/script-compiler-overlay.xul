@@ -3,16 +3,20 @@
   <statusbar id="status-bar">
     <statusbarpanel id="calilay-statusbar-panel" align="center" context="calilay-context-menu">
       <hbox align="center" flex="1"
-            onclick="calilay.toggleStatus(event);" >
+            onclick="calilay_statusbar.toggleStatus(event);" >
         <image id="calilay-statusbar-icon"
+               onload="calilay_statusbar.initStatusbarIcon(event)"
                src="chrome://calilay/skin/calilay16.png" />
       </hbox>
     </statusbarpanel>
 
-    <menupopup id="calilay-context-menu" onpopupshowing="calilay.updateContextMenu();">
+    <menupopup id="calilay-context-menu"
+               onpopupshowing="calilay_statusbar.initMenuitems(event);">
       <menuitem id="calilay-menu-open-config"
                 label="設定"
-                oncommand="calilay.openConfig();" />
+                oncommand="calilay_statusbar.openConfig();" />
+      <menuitem id="calilay-menu-toggle-status"
+                oncommand="calilay_statusbar.toggleStatus(event);" />
     </menupopup>
     <hbox id="calilay-popup-container">
       <panel id="calilay-popup" noautofocus="true" />

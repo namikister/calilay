@@ -10,6 +10,9 @@
 (function () {
      if (!GM_getValue("enabled")) return;
 
+     // この行がないとFirefox4でエラーが発生する
+     $ = window.$;
+
      var appkey = '0f316d2b698c28451ed3f5f5223df15b';
 
      var systemIds = (function () {
@@ -91,6 +94,7 @@
 
      function render() {
          var isbnList = renderFunctions[renderer]();
+    
          if (isbnList) {
              var calil = new Calil({appkey: appkey,
 							        render: new CalilRender('single'),

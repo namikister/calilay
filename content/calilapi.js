@@ -159,7 +159,8 @@ CalilRender.prototype =  {
 		if (this.render_mode == 'single'){
 			$(".calil_system_status").each(function(){
                 if ($(this).text() === ":検索中") {
-			        $(this).html('：タイムアウト');
+			        $(this).html('：タイムアウト')
+                           .removeClass('calilay_searching');
                 }
 			});
 		}else if (this.render_mode == 'list'){
@@ -273,7 +274,9 @@ CalilRender.prototype =  {
 		if (data.status == 'Error'){
 			if ($("#"+isbn) &&
                 $("#"+systemid+" .calil_system_status").text() === ":検索中") {
-				$("#"+systemid+" .calil_system_status").html("：検索失敗");
+				$("#"+systemid+" .calil_system_status")
+                    .html("：検索失敗")
+                    .removeClass('calilay_searching');
 				this.showSearchProgress();
 			}
 			return;
@@ -309,7 +312,9 @@ CalilRender.prototype =  {
 		}
 
 		if ($("#"+isbn)){
-			$("#"+isbn).find("#"+systemid+" .calil_system_status").html("："+total_status);
+			$("#"+isbn).find("#"+systemid+" .calil_system_status")
+                .html("："+total_status)
+                .removeClass('calilay_searching');
 			$("#"+isbn).find("#"+systemid+"> .prefix").html(text);
 		}
 	},

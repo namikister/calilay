@@ -48,6 +48,12 @@
 	color:black;
 	padding: 2px;
 }
+
+.calilay_searching {
+    background-color:#FFA544;
+    -moz-border-radius:2px 2px 2px 2px;
+}
+
 .calil_status {
     padding:0;
     text-align:center;

@@ -47,8 +47,7 @@
                     systemIds.map(function(systemId) {
 						return '<div id="'+systemId+'" class="calil_libsys">' +
 							   '<div>' + systemNames[systemId] +
-							   '<span class="calil_system_status">:検索中' +
-							   '<img src="http://gae.calil.jp/public/img/icon/run.gif">' +
+							   '<span class="calil_system_status calilay_searching">:検索中' +
 							   '</span>' +
 							   '</div>' +
 							   '<div class="prefix"></div>' +

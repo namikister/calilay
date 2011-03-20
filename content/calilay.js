@@ -56,7 +56,7 @@
 					}).join("") +
                     '<div class="calil_clear"></div></div>';
          return html;
-     }     
+     }
 
      var renderFunctions = {
          renderMediaMarker: function () {
@@ -84,7 +84,7 @@
      
          renderAmazonWishlist: function () {
              var isbnList = [];
-             $('tbody.itemWrapper').not('div:has(div.calilay)').each(function(i) {
+             $('tbody.itemWrapper').not('tbody:has(div.calilay)').each(function(i) {
                  if ($(this).attr('name').match(/\.([A-Z0-9]{10})$/)) {
                      var isbn = RegExp.$1;
                      isbnList.unshift(isbn);

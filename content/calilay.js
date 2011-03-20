@@ -48,7 +48,7 @@
 						return '<div id="'+systemId+'" class="calil_libsys">' +
 							   '<div>' + systemNames[systemId] +
 							   '<span class="calil_system_status">:検索中' +
-							   '<img src="http://gae.calil.jp/public/img/run.gif">' +
+							   '<img src="http://gae.calil.jp/public/img/icon/run.gif">' +
 							   '</span>' +
 							   '</div>' +
 							   '<div class="prefix"></div>' +
@@ -61,11 +61,14 @@
      var renderFunctions = {
          renderMediaMarker: function () {
              var isbnList = [];
-             $('.binder_data').not('div:has(div.calilay)').each(function(i) {
+             var $binder_data = $('div.binder_data').not('div:has(div.calilay)');
+             var $med_imgview = $('div.med_imgview').not('div:has(div.calilay)');
+             var $elems = $med_imgview.size() > 0 ? $med_imgview : $binder_data;
+             $elems.each(function(i) {
                  var url = $('a[href^="http://www.amazon.co.jp/"]:first', this).attr('href');
-                 if (url.match(/ASIN\/(\d+)/)) {
+                 if (url.match(/ASIN\/([A-Z0-9]{10})/)) {
                      var isbn = RegExp.$1;
-                     isbnList.push(isbn);
+                     isbnList.unshift(isbn);
                      $(this).append(createInitialElement(isbn));
                  }
              });
@@ -82,9 +85,9 @@
          renderAmazonWishlist: function () {
              var isbnList = [];
              $('tbody.itemWrapper').not('div:has(div.calilay)').each(function(i) {
-                 if ($(this).attr('name').match(/\.(\d{10})/)) {
+                 if ($(this).attr('name').match(/\.([A-Z0-9]{10})$/)) {
                      var isbn = RegExp.$1;
-                     isbnList.push(isbn);
+                     isbnList.unshift(isbn);
                      $(this).find('td.lineItemMainInfo:first').append(createInitialElement(isbn));
                  }
              });

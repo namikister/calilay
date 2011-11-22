@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>図書館の設定</title>
+    <link href='http://fonts.googleapis.com/css?family=Spinnaker' rel='stylesheet' type='text/css'>
+    <style>
+      body {
+        font-family: "メイリオ", "Meiryo";
+      }
+      h1 {
+        font-family: 'Spinnaker', sans-serif;
+      }
+      #libraryList {
+        min-width: 100px;
+      }
+      #prefSelect, #citySelect, #systemSelect {
+        min-width: 100px;      
+      }
+      option.default {
+        color: darkgray;
+      }
+      #selectContainer {
+        position: relative;
+      }
+      #loading {
+        position: absolute;
+        bottom: -16px;
+        left: 150px;
+        display: none;
+      }
+      #loading.show {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      <img src="calilay32.png" />
+      Calilay
+    </h1>
+    <h4>図書館の設定</h4>
+    <div>
+      <select id="libraryList" size="5"></select>
+      <button id="removeLibrary">削除</button>
+    </div>
+    <div id="selectContainer">
+      <select id="prefSelect">
+	<option class="default" value="" disabled>都道府県</option>
+      </select>
+      <select id="citySelect">
+	<option class="default" value="" disabled>市町村</option>
+      </select>
+      <select id="systemSelect">
+	<option class="default" value="" disabled>施設名</option>
+      </select>
+      <button id="addLibrary">追加</button>
+
+      <img id="loading" src="ajax-loader.gif" width="16" height="16" alt="Now Loading..." />
+    </div>
+
+    <script src="jquery-1.6.4.min.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

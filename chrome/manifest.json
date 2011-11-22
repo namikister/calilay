@@ -1,0 +1,28 @@
+{
+    "name": "Calilay",
+    "version": "0.30",
+    "description": "Calilay",
+    "homepage_url": "https://sites.google.com/site/calilay/",
+    "background_page": "background.html",
+    "options_page": "options.html",
+    "page_action" : {
+	"default_icon" : "calilay32.png",
+	"default_title" : "Calilay"
+    },
+    "permissions" : [
+	"tabs",
+	"http://calil.jp/",
+	"http://api.calil.jp/"
+    ],
+    "icons" : {
+	"128" : "calilay128.png"
+    },
+    "content_scripts": [
+	{
+            "matches": ["http://mediamarker.net/u/*", "http://www.amazon.co.jp/*"],
+    	    "css": ["calilapi.css"],
+    	    "js": ["jquery-1.6.4.min.js", "calilapi.js", "sites.js", "calilay.js"],
+	    "run_at": "document_end"
+	}
+    ]
+}

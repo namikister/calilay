@@ -83,4 +83,6 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
     };
 
     render();
+
+    document.addEventListener("AutoPagerAfterInsert", render);
 });

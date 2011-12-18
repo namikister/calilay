@@ -49,6 +49,9 @@ var CalilayPrefWindow = {
             // prefSelect.selectedIndex = 0;
             // CalilayPrefWindow.prefOnSelect();
         };
+	setTimeout(function () {
+	    window.sizeToContent();
+	}, 100);
     },
 
     prefOnSelect: function () {
@@ -206,3 +209,6 @@ var CalilayPrefWindow = {
     }
 };
 window.addEventListener('load', CalilayPrefWindow.onLoad, false);
+function onpaneload() {
+    window.sizeToContent();
+}

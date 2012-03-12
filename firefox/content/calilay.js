@@ -77,7 +77,7 @@
          renderAmazonDetail: function () {
              var isbn = document.getElementById('ASIN').value;
              var isbnList = [isbn];
-             $('#olpDivId').after(createInitialElement(isbn));
+             $('form#handleBuy > table:last tr:last > td').append(createInitialElement(isbn));
              return isbnList;
          },
      

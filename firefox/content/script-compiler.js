@@ -47,7 +47,8 @@ getCalilayRenderer: function(href) {
     var pages = [
         [/http:\/\/mediamarker\.net\/u\/.*\//,  "renderMediaMarker"],
         [/http:\/\/www\.amazon\.co\.jp\/.*(ASIN|[dg]p)(\/product)?\/[\dX]{10}/,  "renderAmazonDetail"],
-        [/http:\/\/www\.amazon\.co\.jp\/(.*\/)?wishlist\//,  "renderAmazonWishlist"]
+        [/http:\/\/www\.amazon\.co\.jp\/(.*\/)?wishlist\//,  "renderAmazonWishlist"],
+	[/http:\/\/book.akahoshitakuya.com\/home\?main=pre/, "renderDockushoMeterPre"]
     ];
     for (var i = 0; i < pages.length; i++) {
         if (pages[i][0].test(href)) {
@@ -72,7 +73,7 @@ contentLoad: function(e) {
 	) {
 		var script = "";
         script += calilay_gmCompiler.getUrlContents(
-			'chrome://calilay/content/jquery-1.4.2.js'
+			'chrome://calilay/content/jquery-1.6.4.min.js'
 		);
         script += calilay_gmCompiler.getUrlContents(
 			'chrome://calilay/content/calilapi.js'

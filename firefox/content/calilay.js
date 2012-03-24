@@ -74,6 +74,19 @@
              return $.unique(isbnList);
          },
 
+	 renderDockushoMeterPre: function () {
+	     var isbnList = [];
+	     $('div.book.book_button_add_ver').not(':has(div.calilay)').each(function(i) {
+		 var href = $(this).children('a:first').attr('href');
+		 if (href.match(/\/b\/([A-Z0-9]{10})/)) {
+		     var isbn = RegExp.$1;
+		     isbnList.unshift(isbn);
+		     $(this).css("cssText", "height: auto !important;").append(createInitialElement(isbn));
+		 }
+	     });
+             return $.unique(isbnList);
+	 },
+
          renderAmazonDetail: function () {
              var isbn = document.getElementById('ASIN').value;
              var isbnList = [isbn];

@@ -1,6 +1,6 @@
 {
     "name": "Calilay",
-    "version": "0.32",
+    "version": "0.33",
     "description": "Calilay",
     "homepage_url": "https://sites.google.com/site/calilay/",
     "background_page": "background.html",
@@ -19,7 +19,7 @@
     },
     "content_scripts": [
 	{
-            "matches": ["http://mediamarker.net/u/*", "http://www.amazon.co.jp/*"],
+            "matches": ["http://mediamarker.net/u/*", "http://www.amazon.co.jp/*", "http://book.akahoshitakuya.com/*"],
     	    "css": ["calilapi.css"],
     	    "js": ["jquery-1.6.4.min.js", "calilapi.js", "sites.js", "calilay.js"],
 	    "run_at": "document_end"

@@ -71,17 +71,11 @@ contentLoad: function(e) {
 		&& renderer
 		&& true
 	) {
-		var script = "";
-        script += calilay_gmCompiler.getUrlContents(
-			'chrome://calilay/content/jquery-1.6.4.min.js'
-		);
-        script += calilay_gmCompiler.getUrlContents(
-			'chrome://calilay/content/calilapi.js'
-		);
-        script += calilay_gmCompiler.getUrlContents(
-			'chrome://calilay/content/calilay.js'
-		);
-		calilay_gmCompiler.injectScript(script, href, unsafeWin, renderer);
+	    var script = "";
+            script += calilay_gmCompiler.getUrlContents('chrome://calilay/content/jquery-1.6.4.min.js');
+            script += calilay_gmCompiler.getUrlContents('chrome://calilay/content/calilapi.js');
+            script += calilay_gmCompiler.getUrlContents('chrome://calilay/content/calilay.js');
+	    calilay_gmCompiler.injectScript(script, href, unsafeWin, renderer);
 	}
 },
 

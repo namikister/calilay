@@ -68,7 +68,16 @@ calilay_xmlhttpRequester.prototype.setupRequestEvent =
 function(unsafeContentWin, req, event, details) {
 	if (details[event]) {
 		req[event] = function() {
-			var responseState = {
+     	                var responseState = {
+	        	        __exposedProps__: {
+				    finalUrl: "r",
+				    readyState: "r",
+				    responseHeaders: "r",
+				    responseText: "r",
+				    status: "r",
+				    statusText: "r"
+				},
+
 				// can't support responseXML because security won't
 				// let the browser call properties on it
 				responseText:req.responseText,

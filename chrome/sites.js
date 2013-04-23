@@ -6,9 +6,9 @@ function getSiteType(url) {
         DockushoMeterPre: /http:\/\/book.akahoshitakuya.com\/home\?main=pre/
     };
     for (var type in pages) {
-      if (pages[type].test(url)) {
-        return type;
-      }
+        if (pages[type].test(url)) {
+            return type;
+        }
     }
     return null;
 }

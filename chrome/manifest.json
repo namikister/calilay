@@ -1,28 +1,32 @@
 {
+    "manifest_version": 2,
+    "content_security_policy": "script-src 'self'; object-src 'self'",
     "name": "Calilay",
-    "version": "0.33",
+    "version": "0.34",
     "description": "Calilay",
     "homepage_url": "https://sites.google.com/site/calilay/",
-    "background_page": "background.html",
+    "background": {
+        "scripts": ["sites.js", "background.js"]
+    },
     "options_page": "options.html",
     "page_action" : {
-	"default_icon" : "calilay32.png",
-	"default_title" : "Calilay"
+        "default_icon" : "calilay32.png",
+        "default_title" : "Calilay"
     },
     "permissions" : [
-	"tabs",
-	"http://calil.jp/",
-	"http://api.calil.jp/"
+        "tabs",
+        "http://calil.jp/",
+        "http://api.calil.jp/"
     ],
     "icons" : {
-	"128" : "calilay128.png"
+        "128" : "calilay128.png"
     },
     "content_scripts": [
-	{
+        {
             "matches": ["http://mediamarker.net/u/*", "http://www.amazon.co.jp/*", "http://book.akahoshitakuya.com/*"],
-    	    "css": ["calilapi.css"],
-    	    "js": ["jquery-1.6.4.min.js", "calilapi.js", "sites.js", "calilay.js"],
-	    "run_at": "document_end"
-	}
+            "css": ["calilapi.css"],
+            "js": ["jquery-1.6.4.min.js", "calilapi.js", "sites.js", "calilay.js"],
+            "run_at": "document_end"
+        }
     ]
 }

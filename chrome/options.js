@@ -15,169 +15,169 @@
     var appkey = '0f316d2b698c28451ed3f5f5223df15b';
 
     var saveLibraries = function(libraries) {
-	localStorage.setItem("libraries", JSON.stringify(libraries));
+        localStorage.setItem("libraries", JSON.stringify(libraries));
     };
 
     var loadLibraries = function() {
-	return JSON.parse(localStorage.getItem("libraries")) || [];
+        return JSON.parse(localStorage.getItem("libraries")) || [];
     };
 
     $(document).ready(function() {
-	var libraries = loadLibraries();
+        var libraries = loadLibraries();
 
-	$("select").not("#libraryList").attr("disabled", true);
-	$("button").attr("disabled", true);
+        $("select").not("#libraryList").attr("disabled", true);
+        $("button").attr("disabled", true);
 
-	$("#libraryList").append(
-	    libraries.map(function(library) {
-		return new Option(library.name, library.id);
-	    })
-	);
+        $("#libraryList").append(
+            libraries.map(function(library) {
+                return new Option(library.name, library.id);
+            })
+        );
 
-	$("#prefSelect").append(
-	    prefectures.map(function (pref) {
-		return new Option(pref, pref);
-	    })
-	);
+        $("#prefSelect").append(
+            prefectures.map(function (pref) {
+                return new Option(pref, pref);
+            })
+        );
 
         $.get("http://calil.jp/city_list", function (text) {
             var json = text.match(/loadcity\((.*?)\);$/);
-	    var data = JSON.parse(json[1]);	    
-	    cityData = data;
-	    $("#prefSelect")
-		.attr("disabled", false)
-		.focus();
-        }).error(function(jqXHR, textStatus) {
-	    alert('市町村の取得に失敗しました。:' + textStatus);
-	});
+            var data = JSON.parse(json[1]);
+            cityData = data;
+            $("#prefSelect")
+            .attr("disabled", false)
+            .focus();
+        }, "text").error(function(jqXHR, textStatus) {
+            alert('市町村の取得に失敗しました。:' + textStatus);
+        });
     });
-    
+
     $("#prefSelect").change(function() {
         var $prefSelect   = $(this),
-	    cities = cityData[$prefSelect.val()],
-	    yindex = "あ,か,さ,た,な,は,ま,や,ら,わ".split(","),
-	    options = [];
+            cities = cityData[$prefSelect.val()],
+            yindex = "あ,か,さ,た,な,は,ま,や,ら,わ".split(","),
+            options = [];
 
-	$("#systemSelect").val("").attr("disabled", true);
-	$("#addLibrary").attr("disabled", true);
+        $("#systemSelect").val("").attr("disabled", true);
+        $("#addLibrary").attr("disabled", true);
 
-	yindex.forEach(function(y) {
+        yindex.forEach(function(y) {
             if (cities[y] === undefined) return;
-	    options = options.concat(cities[y].map(function (city) {
-		return new Option(city, city);
-	    }));
-	});
+            options = options.concat(cities[y].map(function (city) {
+                                         return new Option(city, city);
+                                     }));
+        });
 
-	$("#citySelect")
-	    .find("option").not(":first").remove().end().end()
-	    .append(options)
-	    .val("")
-	    .attr("disabled", false)
-	    .focus();
+        $("#citySelect")
+        .find("option").not(":first").remove().end().end()
+        .append(options)
+        .val("")
+        .attr("disabled", false)
+        .focus();
     });
 
     $("#citySelect").change(function() {
         var $citySelect = $(this),
-	    $prefSelect = $("#prefSelect"),
-	    $systemSelect = $("#systemSelect"),
-	    $addLibrary = $("#addLibrary"),
-	    $loading = 	$("#loading");
+            $prefSelect = $("#prefSelect"),
+            $systemSelect = $("#systemSelect"),
+            $addLibrary = $("#addLibrary"),
+            $loading =  $("#loading");
 
-	$prefSelect.attr("disabled", true);
-	$citySelect.attr("disabled", true);
-	$systemSelect.attr("disabled", true).val("");
-	$addLibrary.attr("disabled", true).val("");
-	$loading.addClass("show");
+        $prefSelect.attr("disabled", true);
+        $citySelect.attr("disabled", true);
+        $systemSelect.attr("disabled", true).val("");
+        $addLibrary.attr("disabled", true).val("");
+        $loading.addClass("show");
 
         $.ajax({
-	    url: 'http://api.calil.jp/library',
-	    data: {
-		appkey: appkey,
-		format: "json",
-		pref: $prefSelect.val(),
-		city: $citySelect.val()
-	    },
-	    dataType: "text"
-	}).success(function(text) {
-	    var json = text.match(/callback\((.*?)\);$/);
-	    var data = JSON.parse(json[1]);
-	    var options, systems = [];
+            url: 'http://api.calil.jp/library',
+            data: {
+                appkey: appkey,
+                format: "json",
+                pref: $prefSelect.val(),
+                city: $citySelect.val()
+            },
+            dataType: "text"
+        }).success(function(text) {
+            var json = text.match(/callback\((.*?)\);$/);
+            var data = JSON.parse(json[1]);
+            var options, systems = [];
 
-	    if (data.length <= 0) {
-		alert('図書館が見つかりませんでした。');
-		return;
-	    }
+            if (data.length <= 0) {
+                alert('図書館が見つかりませんでした。');
+                return;
+            }
 
-	    options = data.filter(function(elem){
-		var id = elem.systemid;
-		if (systems.indexOf(id) < 0) {
-		    systems.push(id);
-		    return true;
-		}
-		else {
-		    return false;
-		}
-	    }).map(function(elem) {
-		return new Option(elem.systemname, elem.systemid);
-	    });
+            options = data.filter(function(elem){
+                          var id = elem.systemid;
+                          if (systems.indexOf(id) < 0) {
+                              systems.push(id);
+                              return true;
+                          }
+                          else {
+                              return false;
+                          }
+                      }).map(function(elem) {
+                          return new Option(elem.systemname, elem.systemid);
+                      });
 
-	    $systemSelect
-		.find("option").not(":first").remove().end().end()
-		.append(options)
-		.val("")
-		.attr("disabled", false)
-		.focus();
+            $systemSelect
+            .find("option").not(":first").remove().end().end()
+            .append(options)
+            .val("")
+            .attr("disabled", false)
+            .focus();
         }).error(function(jqXHR, textStatus) {
-	    alert('図書館の取得に失敗しました。:' + textStatus);
-	}).complete(function() {
-	    $prefSelect.attr("disabled", false);
-	    $citySelect.attr("disabled", false);
-	    $loading.removeClass("show");
-	});
+            alert('図書館の取得に失敗しました。:' + textStatus);
+        }).complete(function() {
+            $prefSelect.attr("disabled", false);
+            $citySelect.attr("disabled", false);
+            $loading.removeClass("show");
+        });
     });
 
     $("#systemSelect").change(function() {
-	$("#addLibrary")
-	    .attr("disabled", false)
-	    .focus();
+        $("#addLibrary")
+        .attr("disabled", false)
+        .focus();
     });
 
     $("#libraryList").change(function() {
-	if ($(this).children("option:selected").length > 0) {
-	    $("#removeLibrary").attr("disabled", false);
-	}
+        if ($(this).children("option:selected").length > 0) {
+            $("#removeLibrary").attr("disabled", false);
+        }
     });
 
     $("#addLibrary").click(function() {
         var $libraryList = $("#libraryList"),
-	    $selected = $("#systemSelect option:selected"),
-	    library = {
-		name: $selected.text(),
-		id: $selected.val()
-	    },
-	    libraries = loadLibraries();
+            $selected = $("#systemSelect option:selected"),
+            library = {
+                name: $selected.text(),
+                id: $selected.val()
+            },
+            libraries = loadLibraries();
 
-	if (libraries.some(function(elem) {return (elem.id === library.id);})) {
+        if (libraries.some(function(elem) {return (elem.id === library.id);})) {
             alert("既に同じ図書館が登録されています。");
-	}
-	else if (libraries.length > $libraryList.attr("size")) {
-	    alert("これ以上図書館を追加できません。");
-	}
-	else {
-	    $libraryList.append(new Option(library.name, library.id));
-	    libraries.push(library);
-	    saveLibraries(libraries);
-	}
+        }
+        else if (libraries.length > $libraryList.attr("size")) {
+            alert("これ以上図書館を追加できません。");
+        }
+        else {
+            $libraryList.append(new Option(library.name, library.id));
+            libraries.push(library);
+            saveLibraries(libraries);
+        }
     });
 
     $("#removeLibrary").click(function() {
         var libraries = loadLibraries(),
-	    $selected = $("#libraryList option:selected"),
-	    id = $selected.val();
-	$selected.remove();
-	saveLibraries(libraries.filter(function(elem) {
-	    return elem.id !== id;
-	}));
-	$("#removeLibrary").attr("disabled", true);
+            $selected = $("#libraryList option:selected"),
+            id = $selected.val();
+        $selected.remove();
+        saveLibraries(libraries.filter(function(elem) {
+                          return elem.id !== id;
+                      }));
+        $("#removeLibrary").attr("disabled", true);
     });
 })();

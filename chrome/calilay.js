@@ -1,11 +1,11 @@
 /**
  * Calilay 図書館蔵書検索
- * 
+ *
  * Showing results of library searching using calil api.
  * Copyright Yuta Namiki
  * For any bug or suggestion contact namikister@gmail.com
  * Released under BSD
- * 
+ *
  */
 chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, function(response) {
     var libraries = JSON.parse(response.data);
@@ -17,17 +17,17 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
 
     var createInitialElement = function(isbn) {
         var html =
-		'<div id="'+isbn+'" class="calilay">' +
-                libraries.map(function(library) {
-		    return '<div id="'+library.id+'" class="calil_libsys">' +
-			'<div>' + library.name +
-			'<span class="calil_system_status calilay_searching">:検索中' +
-			'</span>' +
-			'</div>' +
-			'<div class="prefix"></div>' +
-			'</div>';
-		}).join("") +
-                '<div class="calil_clear"></div></div>';
+            '<div id="'+isbn+'" class="calilay">' +
+            libraries.map(function(library) {
+                return '<div id="'+library.id+'" class="calil_libsys">' +
+                    '<div>' + library.name +
+                    '<span class="calil_system_status calilay_searching">:検索中' +
+                    '</span>' +
+                    '</div>' +
+                    '<div class="prefix"></div>' +
+                    '</div>';
+            }).join("") +
+            '<div class="calil_clear"></div></div>';
         return html;
     };
 
@@ -48,18 +48,18 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
             return $.unique(isbnList);
         },
 
-	DockushoMeterPre: function () {
-	    var isbnList = [];
-	    $('div.book.book_button_add_ver').not(':has(div.calilay)').each(function(i) {
-		var href = $(this).children('a:first').attr('href');
-		if (href.match(/\/b\/([A-Z0-9]{10})/)) {
-		    var isbn = RegExp.$1;
-		    isbnList.unshift(isbn);
-		    $(this).css('height', 'auto !important').append(createInitialElement(isbn));
-		}
-	    });
+        DockushoMeterPre: function () {
+            var isbnList = [];
+            $('div.book.book_button_add_ver').not(':has(div.calilay)').each(function(i) {
+                var href = $(this).children('a:first').attr('href');
+                if (href.match(/\/b\/([A-Z0-9]{10})/)) {
+                    var isbn = RegExp.$1;
+                    isbnList.unshift(isbn);
+                    $(this).css('height', 'auto !important').append(createInitialElement(isbn));
+                }
+            });
             return $.unique(isbnList);
-	},
+        },
 
         AmazonDetail: function () {
             var isbn = document.getElementById('ASIN').value;
@@ -67,7 +67,7 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
             $('form#handleBuy > table:last tr:last > td').append(createInitialElement(isbn));
             return isbnList;
         },
-	
+
         AmazonWishlist: function () {
             var isbnList = [];
             $('tbody.itemWrapper').not('tbody:has(div.calilay)').each(function(i) {
@@ -83,12 +83,12 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
 
     var render = function() {
         var isbnList = renderFunctions[siteType]();
-	
+
         if (isbnList.length > 0) {
             var calil = new Calil({appkey: appkey,
-				   render: new CalilRender('single'),
-				   isbn: isbnList,
-				   systemid: libraries.map(function(library) { return library.id; })
+                                   render: new CalilRender('single'),
+                                   isbn: isbnList,
+                                   systemid: libraries.map(function(library) { return library.id; })
                                   });
 
             calil.search();

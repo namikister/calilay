@@ -3,7 +3,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>{e2502f98-8bf2-11df-ade1-000c290539ce}</em:id>
     <em:name>Calilay</em:name>
-    <em:version>0.34</em:version>
+    <em:version>0.35</em:version>
     <em:description>登録した図書館の蔵書検索の結果を対応サイト上にオーバーレイします。</em:description>
     <em:creator>Yuta Namiki</em:creator>
     <em:contributor>Greasemonkey Compiler by Anthony Lieuallen;</em:contributor>
@@ -13,7 +13,7 @@
     <em:targetApplication><Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>3.0</em:minVersion>
-        <em:maxVersion>17.*</em:maxVersion>
+        <em:maxVersion>22.*</em:maxVersion>
       </Description>
     </em:targetApplication>
     <em:optionsURL>chrome://calilay/content/config.xul</em:optionsURL>

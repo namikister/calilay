@@ -1,2 +1,0 @@
-6d89433a02409f8a7f5a75cd7e980ebe49d08288 *calilay.xpi
-2f77ee84a0985a7a0820af40c6b876a6f1a39ce1 *calilay_noupdate.xpi

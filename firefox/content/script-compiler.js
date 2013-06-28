@@ -48,7 +48,7 @@ getCalilayRenderer: function(href) {
         [/http:\/\/mediamarker\.net\/u\/.*\//,  "renderMediaMarker"],
         [/http:\/\/www\.amazon\.co\.jp\/.*(ASIN|[dg]p)(\/product)?\/[\dX]{10}/,  "renderAmazonDetail"],
         [/http:\/\/www\.amazon\.co\.jp\/(.*\/)?wishlist\//,  "renderAmazonWishlist"],
-	[/http:\/\/book.akahoshitakuya.com\/home\?main=pre/, "renderDockushoMeterPre"]
+        [/http:\/\/book.akahoshitakuya.com\/home\?main=pre/, "renderDockushoMeterPre"]
     ];
     for (var i = 0; i < pages.length; i++) {
         if (pages[i][0].test(href)) {
@@ -83,7 +83,10 @@ injectScript: function(script, url, unsafeContentWin, renderer) {
 	var sandbox, logger, xmlhttpRequester;
 	var safeWin=new XPCNativeWrapper(unsafeContentWin);
 
-	sandbox=new Components.utils.Sandbox(safeWin);
+	sandbox=new Components.utils.Sandbox(safeWin, {
+        sandboxName: url,
+        sandboxPrototype: safeWin
+    });
 
 	var storage=new calilay_ScriptStorage();
 	xmlhttpRequester=new calilay_xmlhttpRequester(
@@ -118,8 +121,6 @@ injectScript: function(script, url, unsafeContentWin, renderer) {
 	sandbox.GM_getResourceURL=function(){};
 	sandbox.GM_getResourceText=function(){};
 
-	sandbox.__proto__=sandbox.window;
-
 	try {
         Components.utils.evalInSandbox(
 			"(function(){"+script+"})()",
@@ -141,7 +142,7 @@ openInTab: function(unsafeContentWin, url) {
 			break;
 		}
 	if (!isMyWindow) return;
- 
+
 	var loadInBackground, sendReferrer, referrer = null;
 	loadInBackground = tabBrowser.mPrefs.getBoolPref("browser.tabs.loadInBackground");
 	sendReferrer = tabBrowser.mPrefs.getIntPref("network.http.sendRefererHeader");
@@ -152,7 +153,7 @@ openInTab: function(unsafeContentWin, url) {
 	 }
 	 tabBrowser.loadOneTab(url, referrer, null, null, loadInBackground);
 },
- 
+
 apiLeakCheck: function(allowedCaller) {
 	var stack=Components.stack;
 
@@ -160,7 +161,7 @@ apiLeakCheck: function(allowedCaller) {
 	do {
 		if (2==stack.language) {
 			if ('chrome'!=stack.filename.substr(0, 6) &&
-				allowedCaller!=stack.filename 
+				allowedCaller!=stack.filename
 			) {
 				leaked=true;
 				break;
@@ -185,7 +186,7 @@ hitch: function(obj, meth) {
 		if (calilay_gmCompiler.apiLeakCheck(hitchCaller)) {
 			return;
 		}
-		
+
 		// make a copy of staticArgs (don't modify it because it gets reused for
 		// every invocation).
 		var args = staticArgs.concat();
@@ -250,7 +251,7 @@ var calilay_statusbar = {
         };
         var opened = getWindow("Calilay:Config");
         if (opened) {
-            opened.focus();            
+            opened.focus();
         }
         else {
             window.openDialog("chrome://calilay/content/config.xul",

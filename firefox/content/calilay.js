@@ -1,11 +1,11 @@
 /**
  * Calilay 図書館蔵書検索
- * 
+ *
  * Showing results of library searching using calil api.
  * Copyright Yuta Namiki
  * For any bug or suggestion contact namikister@gmail.com
  * Released under BSD
- * 
+ *
  */
 (function () {
      if (!GM_getValue("enabled")) return;
@@ -31,7 +31,7 @@
      var counter = 0;
      systemIds.forEach(function(id) {
 	     GM_xmlhttpRequest({
-	         method:'GET', 
+	         method:'GET',
 			 url: 'http://api.calil.jp/library?appkey='+appkey+'&format=json&systemid='+id,
 			 onload:function(data){
                  var json = data.responseText.match(/callback\((.*?)\);$/);
@@ -90,10 +90,10 @@
          renderAmazonDetail: function () {
              var isbn = document.getElementById('ASIN').value;
              var isbnList = [isbn];
-             $('form#handleBuy > table:last tr:last > td').append(createInitialElement(isbn));
+             $('#centerCol, form#handleBuy > table:last tr:last > td').append(createInitialElement(isbn));
              return isbnList;
          },
-     
+
          renderAmazonWishlist: function () {
              var isbnList = [];
              $('tbody.itemWrapper').not('tbody:has(div.calilay)').each(function(i) {
@@ -109,7 +109,7 @@
 
      function render() {
          var isbnList = renderFunctions[renderer]();
-    
+
          if (isbnList) {
              var calil = new Calil({appkey: appkey,
 							        render: new CalilRender('single'),

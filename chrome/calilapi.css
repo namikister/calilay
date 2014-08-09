@@ -2,51 +2,51 @@
 /* list */
 
 .calil_searching {
-	background-image: url("http://calil.jp/public/img/fish.gif");
-	background-repeat: no-repeat;
-	padding: 3px;
-	width: 8em;
-	font-size: 85%;
-	text-align:center;
+    background-image: url("http://calil.jp/public/img/fish.gif");
+    background-repeat: no-repeat;
+    padding: 3px;
+    width: 8em;
+    font-size: 85%;
+    text-align:center;
 }
 /* .calil_status {
-	color:white;
-	display: inline-block;
-	padding: 3px;
-	width: 8em;
-	font-size: 85%;
-	text-decoration:none;
-	text-align:center;
+    color:white;
+    display: inline-block;
+    padding: 3px;
+    width: 8em;
+    font-size: 85%;
+    text-decoration:none;
+    text-align:center;
 }
  */
 .calil_nijumaru {
-	background-color: #339AFC;
+    background-color: #339AFC;
 }
 .calil_maru {
-	background-color: #5CC00F;
+    background-color: #5CC00F;
 }
 .calil_sankaku {
-	background-color: #F29327;
+    background-color: #F29327;
 }
 .calil_marukannai {
-	background-color: #EC6A8C;
+    background-color: #EC6A8C;
 }
 .calil_batu {
-	background-color: #D4D4D4;
+    background-color: #D4D4D4;
 }
 .calil_minus {
-	background-color: #D4D4D4;
+    background-color: #D4D4D4;
 }
 .calil_nothing {
-	background-color: #AAAAAA;
+    background-color: #AAAAAA;
 }
 
 /* single */
 
 .calil_system_status {
-	text-decoration:none;
-	color:black;
-	padding: 2px;
+    text-decoration:none;
+    color:black;
+    padding: 2px;
 }
 
 .calilay_searching {
@@ -119,71 +119,71 @@
 }
 
 .calil_libname a {
-	color: white;
+    color: white;
 }
 
 /* CalilCitySelectDlg */
 
 #calil_place_dialog_wrapper {
-	display: none;
-	position: absolute;
-	top : 0;
-	left : 0;
+    display: none;
+    position: absolute;
+    top : 0;
+    left : 0;
 }
 
 #calil_place_dialog {
-	display: none;
-	position : absolute;
-	padding : 0 10px 10px 10px;
-	top : 0;
-	left : 0;
-	background-color: white;
-	width: 460px;
-	border: 5px solid #999;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	font-size: 90%;
+    display: none;
+    position : absolute;
+    padding : 0 10px 10px 10px;
+    top : 0;
+    left : 0;
+    background-color: white;
+    width: 460px;
+    border: 5px solid #999;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    font-size: 90%;
 }
 #calil_place_dialog a {
-	color:black;
+    color:black;
 }
 .calil_pref_list {
-	height:300px;
-	overflow:auto;
+    height:300px;
+    overflow:auto;
 }
 .calil_city_list .calil_yomi_block{
-	border-bottom:1px solid #26BEFF;
-	clear:both;
-	height:5px;
+    border-bottom:1px solid #26BEFF;
+    clear:both;
+    height:5px;
 }
 .calil_city_list .calil_yomi{
-	float:left;
-	clear:both;
-	width:1.3em;
-	height:1.3em;
-	margin-right:7px;
-	background-color:#26BEFF;
-	color:white;
-	text-align:center;
-	padding:3px 2px 2px 3px;
+    float:left;
+    clear:both;
+    width:1.3em;
+    height:1.3em;
+    margin-right:7px;
+    background-color:#26BEFF;
+    color:white;
+    text-align:center;
+    padding:3px 2px 2px 3px;
 }
 .calil_city_list .calil_cities{
-	float:left;
-	width:410px;
-	line-height:130%;
-	padding-top:1px;
+    float:left;
+    width:410px;
+    line-height:130%;
+    padding-top:1px;
 }
 
 .calil_cities .calil_city_part{
-	display:inline-block;
-	min-width:4em;
-	white-space:no-wrap;
-	margin-right:10px;
-	padding:2px 4px;
-	text-decoration:none;
+    display:inline-block;
+    min-width:4em;
+    white-space:no-wrap;
+    margin-right:10px;
+    padding:2px 4px;
+    text-decoration:none;
 }
 
 .calil_cities a:hover{
-	color: white !important;
-	background-color: #26BEFF;
+    color: white !important;
+    background-color: #26BEFF;
 }

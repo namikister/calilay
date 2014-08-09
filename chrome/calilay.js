@@ -64,7 +64,7 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
         AmazonDetail: function () {
             var isbn = document.getElementById('ASIN').value;
             var isbnList = [isbn];
-            $('form#handleBuy > table:last tr:last > td').append(createInitialElement(isbn));
+            $('#centerCol, form#handleBuy > table:last tr:last > td').append(createInitialElement(isbn));
             return isbnList;
         },
 

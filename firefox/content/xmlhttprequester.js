@@ -15,6 +15,7 @@ calilay_xmlhttpRequester.prototype.contentStartRequest = function(details) {
     // important to store this locally so that content cannot trick us up with
     // a fancy getter that checks the number of times it has been accessed,
     // returning a dangerous URL the time that we actually use it.
+    details = Cu.waiveXrays(details);
     var url = details.url;
 
     // make sure that we have an actual string so that we can't be fooled with

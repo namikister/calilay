@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE prefwindow SYSTEM "chrome://whatever/locale/options.dtd">
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <prefpane id="pref.general">
+    <preferences>
+      <preference id="pref.library1" name="extensions.calilay.library1" type="string"/>
+      <preference id="pref.library2" name="extensions.calilay.library2" type="string"/>
+      <preference id="pref.library3" name="extensions.calilay.library3" type="string"/>
+      <preference id="pref.library4" name="extensions.calilay.library4" type="string"/>
+      <preference id="pref.library5" name="extensions.calilay.library5" type="string"/>
+      <preference id="pref.enabled" name="extensions.calilay.enabled"  type="bool"/>
+    </preferences>
+    <vbox>
+      <checkbox id="enabledCheckBox" label="有効にする" preference="pref.enabled" />
+      <hbox>
+        <vbox>
+          <listbox id="libraryList" rows="5" onselect="CalilayPrefWindow.librarySelected();">
+            <listitem preference="pref.library1"/>
+            <listitem preference="pref.library2"/>
+            <listitem preference="pref.library3"/>
+            <listitem preference="pref.library4"/>
+            <listitem preference="pref.library5"/>
+          </listbox>
+        </vbox>
+        <vbox>
+          <button id="removeButton" label="削除" oncommand="CalilayPrefWindow.removeOnPush();" disabled="true"/>
+        </vbox>
+      </hbox>
+      <hbox>
+        <menulist id="prefSelect" width="120" oncommand="CalilayPrefWindow.prefOnSelect();">
+          <menupopup>
+          </menupopup>
+        </menulist>
+        <menulist id="citySelect" width="120" oncommand="CalilayPrefWindow.cityOnSelect();">
+          <menupopup>
+          </menupopup>
+        </menulist>
+        <menulist id="systemSelect" width="200" oncommand="CalilayPrefWindow.systemOnSelect();">
+          <menupopup>
+          </menupopup>
+        </menulist>
+        <button id="addButton" label="追加" oncommand="CalilayPrefWindow.addOnPush();"/>
+      </hbox>
+    </vbox>
+  </prefpane>
+</overlay>

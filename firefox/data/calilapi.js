@@ -64,7 +64,7 @@ Calil.prototype = {
 		var self = this;
 		if(typeof GM_xmlhttpRequest == 'function'){
 			GM_xmlhttpRequest({
-				method:'GET', 
+				method:'GET',
 				url:url,
 				onload:function(data){
 					var json = data.responseText.match(/callback\((.*?)\)/);
@@ -75,12 +75,14 @@ Calil.prototype = {
 		}else{
 			$.ajax({
 					url: url,
-					dataType: "jsonp",
+					dataType: "text",
 					success:function(data){
-							self.callback(data);
+					                var json = data.match(/callback\((.*?)\)/);
+					                data = JSON.parse(json[1]);
+					                self.callback(data);
 					},
-					error:function(){
-							alert('error');
+					error:function(jqXHR, textStatus, errorThrown){
+							console.log('error: ' + textStatus);
 					}
 			});
 		}
@@ -132,11 +134,11 @@ CalilRender.prototype =  {
 	filter_system_id : 'all',
 	filter_libkey : '',
 	target : '',
-	
+
 	set_mode : function(mode){
 		this.render_mode = mode || 'list';
 	},
-	
+
 	set_target : function(name){
 		this.target = name;
 	},
@@ -182,7 +184,7 @@ CalilRender.prototype =  {
 				}
 				i++;
 			});
-		
+
 		}
 	},
 	start_render_books : function(isbn_list, systemid_list){
@@ -224,7 +226,7 @@ CalilRender.prototype =  {
 			}
 		}
 		return count;
-			
+
 	},
 	get_color : function(status){
 		var status_color = {
@@ -236,13 +238,13 @@ CalilRender.prototype =  {
 			"準備中":"#F29327",
 			"休館中":"#F29327"
 		};
-		
+
 		if (status_color[status]){
 			return status_color[status];
 		}
-		
+
 		return "";
-	
+
 	},
 	get_rank : function(status){
 		var srank = {
@@ -254,7 +256,7 @@ CalilRender.prototype =  {
 			"予約中":"50",
 			"蔵書なし":"40" /*ここから下が不合格*/
 		};
-		
+
 		if (srank[status]){
 			return parseInt(srank[status]);
 		}else if( status != undefined && status != ''){
@@ -281,11 +283,11 @@ CalilRender.prototype =  {
 			}
 			return;
 		}
-		
+
 		var text = "";
 		var total_status = '蔵書なし';
 		for (var i in data.libkey) {
-		
+
 			var status = data.libkey[i];
 			var color = "red";
 			var bgcolor = "#AAAAAA";
@@ -324,7 +326,7 @@ CalilRender.prototype =  {
 		var status = '蔵書なし';
 		var status_show = status;
 		var status_rank = 0;
-		
+
 		//優先表示するステータスを取得
 		for (var i in data.libkey) {
 			if (this.filter_libkey == '' || this.filter_libkey == i){
@@ -352,12 +354,12 @@ CalilRender.prototype =  {
 		if ((data.status == 'Running' || conti) && this.get_rank(status) <= 40){
 			return;
 		}
-		
+
 	//	log(" filter_system_id: " + this.filter_system_id);
-		
+
 		if ($("#"+isbn)){
 			var before_s = $("#"+isbn).attr("status");
-			var isup =  ((this.filter_system_id != 'all') || 
+			var isup =  ((this.filter_system_id != 'all') ||
 					(this.get_rank(status) > this.get_rank(before_s)));
 	//		log("before: " + before_s + " and after: " + status + ":" + isup);
 			if (isup){

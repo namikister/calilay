@@ -51,7 +51,7 @@
 
 .calilay_searching {
     background-color:#FFA544;
-    -moz-border-radius:2px 2px 2px 2px;
+    border-radius:2px 2px 2px 2px;
 }
 
 .calil_status {
@@ -62,7 +62,7 @@
 .calil_libname {
     color: white;
     padding: 2px 2px;
-    -moz-border-radius:4px 4px 4px 4px;
+    border-radius:4px 4px 4px 4px;
     background-color:#00ABFF;
     float:left;
     margin-bottom:2px;
@@ -83,7 +83,7 @@
 
 .calil_reserve a{
     color: white;
-    -moz-border-radius:4px 4px 4px 4px;
+    border-radius:4px 4px 4px 4px;
     border:1px solid #BFB700;
     background-color: #E9E900;
     background: linear-gradient(center top , #F9F900, #BFB700);
@@ -96,10 +96,11 @@
 }
 
 .calil_libsys {
-    -moz-border-radius:4px 4px 4px 4px;
-    background-color:lightcyan;
+    border-radius:4px 4px 4px 4px;
+    background-color:#E4E4E4;
     margin-right: 2px;
     margin-bottom: 2px;
+    padding: 2px;
     font-size:0.7em;
     float: left;
 }
@@ -130,7 +131,7 @@
 	background-color: white;
 	width: 460px;
 	border: 5px solid #999;
-	-moz-border-radius: 10px;
+	border-radius: 10px;
 	-webkit-border-radius: 10px;
 	font-size: 90%;
 }

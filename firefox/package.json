@@ -1,0 +1,25 @@
+{
+    "name": "calilay",
+    "title": "Calilay",
+    "id": "{e2502f98-8bf2-11df-ade1-000c290539ce}",
+    "description": "登録した図書館の蔵書検索の結果を対応サイト上に表示します。",
+    "author": "Yuta Namiki",
+    "license": "MPL 2.0",
+    "version": "0.40.2",
+    "homepage": "http://sites.google.com/site/calilay/",
+    "permissions": {
+        "cross-domain-content": [
+            "http://calil.jp/",
+            "http://api.calil.jp/"
+        ]
+    },
+    "preferences": [
+        {
+            "description": "図書館の設定をして下さい。",
+            "label": "設定",
+            "name": "config",
+            "title": "図書館の設定",
+            "type": "control"
+        }
+    ]
+}

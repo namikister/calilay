@@ -16,6 +16,7 @@
     "permissions" : [
         "tabs",
         "http://calil.jp/",
+        "https://calil.jp/",
         "http://api.calil.jp/"
     ],
     "icons" : {

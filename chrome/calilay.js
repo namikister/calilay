@@ -68,6 +68,19 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
             return isbnList;
         },
 
+        AmazonKindle: function () {
+            var isbnList = [];
+            $("#formats a[id^=a-autoid-").each(function(a) {
+                if ($(this).attr('href').match(/\/(?:ASIN|[dg]p)(?:\/product)?\/([\dX]{10})/)) {
+                    var isbn = RegExp.$1;
+                    isbnList.unshift(isbn);
+                    // TODO: when more than 1 ISBNs are matched, some descriptions may be needed.
+                    $('#centerCol').append(createInitialElement(isbn));
+                }
+            });
+            return $.unique(isbnList);
+        }, 
+
         AmazonWishlist: function () {
             var isbnList = [];
             $('tbody.itemWrapper').not('tbody:has(div.calilay)').each(function(i) {

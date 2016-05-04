@@ -83,11 +83,12 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
 
         AmazonWishlist: function () {
             var isbnList = [];
-            $('tbody.itemWrapper').not('tbody:has(div.calilay)').each(function(i) {
-                if ($(this).attr('name').match(/\.([A-Z0-9]{10})$/)) {
+            $('#wishlist-page [id^=itemInfo_]').not(':has(div.calilay)').each(function(i) {
+                var href = $(this).find('a[id^=itemName_]').attr('href');
+                if (href && href.match(/\/(?:ASIN|[dg]p)(?:\/product)?\/([\dX]{10})/)) {
                     var isbn = RegExp.$1;
                     isbnList.unshift(isbn);
-                    $(this).find('td.lineItemMainInfo:first').append(createInitialElement(isbn));
+                    $(this).append(createInitialElement(isbn));
                 }
             });
             return $.unique(isbnList);

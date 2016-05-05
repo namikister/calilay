@@ -17,14 +17,16 @@
         "tabs",
         "http://calil.jp/",
         "https://calil.jp/",
-        "http://api.calil.jp/"
+        "http://api.calil.jp/",
+        "https://api.calil.jp/"
     ],
     "icons" : {
         "128" : "calilay128.png"
     },
     "content_scripts": [
         {
-            "matches": ["http://mediamarker.net/u/*", "http://www.amazon.co.jp/*", "http://book.akahoshitakuya.com/*"],
+            "matches": ["http://mediamarker.net/u/*", "http://www.amazon.co.jp/*", 
+                        "https://www.amazon.co.jp/*", "http://book.akahoshitakuya.com/*"],
             "css": ["calilapi.css"],
             "js": ["jquery-1.6.4.min.js", "calilapi.js", "sites.js", "calilay.js"],
             "run_at": "document_end"

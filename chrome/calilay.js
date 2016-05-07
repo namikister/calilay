@@ -31,32 +31,31 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
         return html;
     };
 
-    // for Kindle formats, find the ISBNs of their corresponding paper books from their detail pages. 
+    // for Kindle formats, find the ISBNs of their corresponding paper books from their detail pages.
     var resolveKindleIsbnFromAmazonDetailPage = function(detailPageURI, parentElement) {
-        var callback = 
-            (function(html) {
-                var asyncIsbnList = [];
-                $(html).find('#formats a.title-text').each(function(i) {
-                    if ($(this).attr('href').match(/\/(?:ASIN|[dg]p)(?:\/product)?\/([\dX]{10})/)) {
-                        var isbn = RegExp.$1;
-                        asyncIsbnList.unshift(isbn);
-                        // TODO: when more than 1 formats exists, some descriptions may be needed.
-                        $(parentElement).append(createInitialElement(isbn));
-                    }
-                });
-
-                // this callback function may be called after render() is called.
-                // so we have to access Calil API also in this callback.
-                if (asyncIsbnList.length > 0) {
-                    var calil = new Calil({
-                            appkey: appkey,
-                            render: new CalilRender('single'),
-                            isbn: asyncIsbnList,
-                            systemid: libraries.map(function(library) { return library.id; })
-                    });
-                    calil.search();
+        var callback = function(html) {
+            var asyncIsbnList = [];
+            $(html).find('#formats a.title-text').each(function(i) {
+                if ($(this).attr('href').match(/\/(?:ASIN|[dg]p)(?:\/product)?\/([\dX]{10})/)) {
+                    var isbn = RegExp.$1;
+                    asyncIsbnList.unshift(isbn);
+                    // TODO: when more than 1 formats exists, some descriptions may be needed.
+                    $(parentElement).append(createInitialElement(isbn));
                 }
             });
+
+            // this callback function may be called after render() is called.
+            // so we have to access Calil API also in this callback.
+            if (asyncIsbnList.length > 0) {
+                var calil = new Calil({
+                    appkey: appkey,
+                    render: new CalilRender('single'),
+                    isbn: asyncIsbnList,
+                    systemid: libraries.map(function(library) { return library.id; })
+                });
+                calil.search();
+            }
+        };
         $.get(detailPageURI, callback);
     }
 
@@ -108,7 +107,7 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
                 }
             });
             return $.unique(isbnList);
-        }, 
+        },
 
         AmazonWishlist: function () {
             var isbnList = [];

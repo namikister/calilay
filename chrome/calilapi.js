@@ -52,7 +52,7 @@ Calil.prototype = {
 		$("#"+isbn).attr("status","");
 	},
 	search : function() {
-		var domain = "http://api.calil.jp";
+		var domain = "https://api.calil.jp";
 		var apiurl = domain + "/check?appkey="+this.appkey+"&systemid="+ this.systemid_list.join(',') +"&isbn="+ this.isbn_list.join(',');
 		this.call_api(apiurl);
 
@@ -104,7 +104,7 @@ Calil.prototype = {
 			if (this.api_call_count > 7){
 				seconds = 5000;
 			}
-			var newurl = "http://api.calil.jp/check?appkey="+this.appkey+"&session=" + session;
+			var newurl = "https://api.calil.jp/check?appkey="+this.appkey+"&session=" + session;
 			var self = this;
 			setTimeout(function(){
 				self.call_api(newurl);

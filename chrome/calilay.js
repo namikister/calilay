@@ -31,30 +31,39 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
         return html;
     };
 
-    // for Kindle formats, find the ISBNs of their corresponding paper books from their detail pages.
-    var resolveKindleIsbnFromAmazonDetailPage = function(detailPageURI, parentElement) {
-        var callback = function(html) {
-            var asyncIsbnList = [];
-            $(html).find('#formats a.title-text').each(function(i) {
-                if ($(this).attr('href').match(/\/(?:ASIN|[dg]p)(?:\/product)?\/([\dX]{10})/)) {
-                    var isbn = RegExp.$1;
-                    asyncIsbnList.unshift(isbn);
-                    // TODO: when more than 1 formats exists, some descriptions may be needed.
-                    $(parentElement).append(createInitialElement(isbn));
-                }
-            });
+    var renderIsbnList = function(isbnList) {
+        if (isbnList.length <= 0) return;
+        var calil = new Calil({appkey: appkey,
+                               render: new CalilRender('single'),
+                               isbn: isbnList,
+                               systemid: libraries.map(function(library) {
+                                             return library.id;
+                                         })
+                              });
 
+        calil.search();
+    }
+
+    // for Kindle formats, find the ISBNs of their corresponding paper books from their detail pages.
+    var resolveKindleIsbn = function(html) {
+        var isbnList = [];
+        $(html).find('#formats a.title-text').each(function(i) {
+            if ($(this).attr('href').match(/\/(?:ASIN|[dg]p)(?:\/product)?\/([\dX]{10})/)) {
+                var isbn = RegExp.$1;
+                isbnList.push(isbn);
+            }
+        });
+        return isbnList;
+    };
+
+    var renderKindleIsbn = function(detailPageURI, parentElement) {
+        var callback = function(html) {
+            var isbnList = resolveKindleIsbn(html);
+            // TODO: when more than 1 formats exists, some descriptions may be needed.
+            $(parentElement).append(createInitialElement(isbnList[0]));
             // this callback function may be called after render() is called.
             // so we have to access Calil API also in this callback.
-            if (asyncIsbnList.length > 0) {
-                var calil = new Calil({
-                    appkey: appkey,
-                    render: new CalilRender('single'),
-                    isbn: asyncIsbnList,
-                    systemid: libraries.map(function(library) { return library.id; })
-                });
-                calil.search();
-            }
+            renderIsbnList(isbnList);
         };
         $.get(detailPageURI, callback);
     }
@@ -69,8 +78,13 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
                 var url = $('a[href^="http://www.amazon.co.jp/"]:first', this).attr('href');
                 if (url.match(/ASIN\/([A-Z0-9]{10})/)) {
                     var isbn = RegExp.$1;
-                    isbnList.unshift(isbn);
-                    $(this).append(createInitialElement(isbn));
+                    if (isbn.match(/^[\dX]{10}/)) {
+                        isbnList.unshift(isbn);
+                        $(this).append(createInitialElement(isbn));
+                    }
+                    else {
+                        renderKindleIsbn(url, $(this));
+                    }
                 }
             });
             return $.unique(isbnList);
@@ -111,7 +125,7 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
 
         AmazonWishlist: function () {
             var isbnList = [];
-            $('#wishlist-page [id^=itemInfo_]').not(':has(div.calilay)').each(function(i, itemInfo) {
+            $('#wishlist-page [id^=itemInfo_]').not(':has(div.calilay)').each(function(i, elem) {
                 var href = $(this).find('a[id^=itemName_]').attr('href');
 
                 if (href) {
@@ -120,8 +134,8 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
                         isbnList.unshift(isbn);
                         $(this).append(createInitialElement(isbn));
                     }
-                    else if ($(this).text().includes('(Kindle版)')) {
-                        resolveKindleIsbnFromAmazonDetailPage(href, itemInfo);
+                    else if ($(this).find('div.a-row div.a-column div.a-row:first').text().includes('(Kindle版)')) {
+                        renderKindleIsbn(href, elem);
                     }
                 }
             });
@@ -131,16 +145,7 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
 
     var render = function() {
         var isbnList = renderFunctions[siteType]();
-
-        if (isbnList.length > 0) {
-            var calil = new Calil({appkey: appkey,
-                                   render: new CalilRender('single'),
-                                   isbn: isbnList,
-                                   systemid: libraries.map(function(library) { return library.id; })
-                                  });
-
-            calil.search();
-        }
+        renderIsbnList(isbnList);
     };
 
     render();

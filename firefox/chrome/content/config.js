@@ -1,5 +1,3 @@
-var debug = Application.console.log;
-
 var CalilayPrefWindow = {
     cityData: null,
     prefectures: [

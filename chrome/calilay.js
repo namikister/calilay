@@ -76,7 +76,7 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
             var $elems = $med_imgview.size() > 0 ? $med_imgview : $binder_data;
             $elems.each(function(i) {
                 var url = $('a[href^="http://www.amazon.co.jp/"]:first', this).attr('href');
-                if (url.match(/ASIN\/([A-Z0-9]{10})/)) {
+                if (url.match(/(?:ASIN|[dg]p)\/([A-Z0-9]{10})/)) {
                     var isbn = RegExp.$1;
                     if (isbn.match(/^[\dX]{10}/)) {
                         isbnList.unshift(isbn);

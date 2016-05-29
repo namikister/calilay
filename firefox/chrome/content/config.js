@@ -31,10 +31,16 @@ var CalilayPrefWindow = {
     onLoad: function () {
         var url = "http://calil.jp/city_list";
         CalilayPrefWindow.ajaxGet(url, function (text) {
-                         var json = text.match(/loadcity\((.*?)\);$/);
-	                     var data = JSON.parse(json[1]);
-	                     loadCity(data);
-                     });
+            var json = text.match(/loadcity\((.*?)\);$/);
+            var data = JSON.parse(json[1]);
+            loadCity(data);
+        });
+
+        var prefSelect = document.getElementById("prefSelect");
+        CalilayPrefWindow.prefectures.forEach(function (pref) {
+            prefSelect.appendItem(pref, pref);
+        });
+
         CalilayPrefWindow.refreshLibraryList();
 
         function loadCity(data) {
@@ -49,9 +55,9 @@ var CalilayPrefWindow = {
             // prefSelect.selectedIndex = 0;
             // CalilayPrefWindow.prefOnSelect();
         };
-	setTimeout(function () {
-	    window.sizeToContent();
-	}, 100);
+        setTimeout(function () {
+            window.sizeToContent();
+        }, 100);
     },
 
     prefOnSelect: function () {
@@ -64,7 +70,7 @@ var CalilayPrefWindow = {
             citySelect.selectedItem = null;
             systemSelect.selectedItem = null;
             var cities = CalilayPrefWindow.cityData[prefSelect.selectedItem.label];
-	        var yindex = "あ,か,さ,た,な,は,ま,や,ら,わ".split(",");
+            var yindex = "あ,か,さ,た,な,は,ま,や,ら,わ".split(",");
             CalilayPrefWindow.removeOptions(citySelect.menupopup);
             yindex.forEach(function (y) {
                 if (cities[y]) {
@@ -78,24 +84,24 @@ var CalilayPrefWindow = {
             citySelect.focus();
         }
     },
-    
+
     cityOnSelect: function () {
         var citySelect = document.getElementById("citySelect");
         var prefSelect = document.getElementById("prefSelect");
-	    var pref = prefSelect.selectedItem.label;
-	    var city = citySelect.selectedItem.label;
-	    pref = encodeURIComponent(pref);
-	    city = encodeURIComponent(city);
-	    var url = 'http://api.calil.jp/library?appkey='+CalilayPrefWindow.appkey+'&format=json&pref='+pref+'&city='+city;
+        var pref = prefSelect.selectedItem.label;
+        var city = citySelect.selectedItem.label;
+        pref = encodeURIComponent(pref);
+        city = encodeURIComponent(city);
+        var url = 'http://api.calil.jp/library?appkey='+CalilayPrefWindow.appkey+'&format=json&pref='+pref+'&city='+city;
         CalilayPrefWindow.ajaxGet(url, function (text) {
-				         var json = text.match(/callback\((.*?)\);$/);
-				         var data = JSON.parse(json[1]);
-				         setLibrary(data, pref, city);
+            var json = text.match(/callback\((.*?)\);$/);
+            var data = JSON.parse(json[1]);
+            setLibrary(data, pref, city);
                      });
 
         function setLibrary(data, pref, city) {
             if (data.length > 0) {
-		        var systems = {};
+                var systems = {};
                 data.forEach(function(elem){
                     if (typeof systems[elem.systemid] === 'undefined') {
                         systems[elem.systemid] = elem.systemname;
@@ -110,9 +116,9 @@ var CalilayPrefWindow = {
                 }
                 systemSelect.selectedIndex = 0;
                 CalilayPrefWindow.systemOnSelect();
-	        } else {
-		        alert('図書館が見つかりませんでした。');
-	        }
+            } else {
+                alert('図書館が見つかりませんでした。');
+            }
         }
     },
 
@@ -184,15 +190,15 @@ var CalilayPrefWindow = {
         for (i = 0; i < len; i++){
             id = CalilayPrefWindow.getPrefValue(nodes.item(i));
             if (id) {
-				setSystemName(id, nodes.item(i));
+                setSystemName(id, nodes.item(i));
             }
         }
 
         function setSystemName(id, elem) {
-	        var url = 'http://api.calil.jp/library?appkey='+CalilayPrefWindow.appkey+'&format=json&systemid='+id;
+            var url = 'http://api.calil.jp/library?appkey='+CalilayPrefWindow.appkey+'&format=json&systemid='+id;
             CalilayPrefWindow.ajaxGet(url, function (text) {
-				var json = text.match(/callback\((.*?)\);$/);
-				var data = JSON.parse(json[1]);
+                var json = text.match(/callback\((.*?)\);$/);
+                var data = JSON.parse(json[1]);
                 elem.label = data[0].systemname;
             });
         };

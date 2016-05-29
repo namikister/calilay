@@ -13,15 +13,16 @@ exports.main = function (options, callbacks) {
 var data = require("sdk/self").data;
 
 function getSiteType(url) {
-    var pages = {
-        MediaMarker:      /http:\/\/mediamarker\.net\/u\/.*\//,
-        AmazonDetail:     /http:\/\/www\.amazon\.co\.jp\/.*(ASIN|[dg]p)(\/product)?\/[\dX]{10}/,
-        AmazonWishlist:   /http:\/\/www\.amazon\.co\.jp\/(.*\/)?wishlist\//,
-        DockushoMeterPre: /http:\/\/book.akahoshitakuya.com\/home\?main=pre/
-    };
-    for (var type in pages) {
-        if (pages[type].test(url)) {
-            return type;
+    var pages = [
+        ["MediaMarker",      /http:\/\/mediamarker\.net\/u\/.*\//],
+        ["AmazonDetail",     /https?:\/\/www\.amazon\.co\.jp\/.*(ASIN|[dg]p)(\/product)?\/[\dX]{10}/],
+        ["AmazonKindle",     /https?:\/\/www\.amazon\.co\.jp\/.*(ASIN|[dg]p)(\/product)?\/\w{10}/],
+        ["AmazonWishlist",   /https?:\/\/www\.amazon\.co\.jp\/(.*\/)?wishlist\//],
+        ["DockushoMeterPre", /http:\/\/book.akahoshitakuya.com\/home\?main=pre/]
+    ];
+    for (var i = 0, len = pages.length; i < len; i++) {
+        if (pages[i][1].test(url)) {
+            return pages[i][0];
         }
     }
     return null;
@@ -37,6 +38,7 @@ require("sdk/page-mod").PageMod({
     include: [
         "http://mediamarker.net/u/*",
         "http://www.amazon.co.jp/*",
+        "https://www.amazon.co.jp/*",
         "http://book.akahoshitakuya.com/*"
     ],
     contentScriptWhen: "ready",

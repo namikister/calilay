@@ -5,12 +5,16 @@
     "description": "登録した図書館の蔵書検索の結果を対応サイト上に表示します。",
     "author": "Yuta Namiki",
     "license": "MPL 2.0",
-    "version": "0.40.3",
+    "version": "0.40.4",
     "homepage": "http://sites.google.com/site/calilay/",
     "permissions": {
         "cross-domain-content": [
             "http://calil.jp/",
-            "http://api.calil.jp/"
+            "https://calil.jp/",
+            "http://api.calil.jp/",
+            "https://api.calil.jp/",
+            "http://www.amazon.co.jp/",
+            "https://www.amazon.co.jp/"
         ]
     },
     "preferences": [

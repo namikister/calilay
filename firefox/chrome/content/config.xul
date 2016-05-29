@@ -5,17 +5,17 @@
 <?xml-stylesheet href="chrome://calilay/skin/config.css" type="text/css"?>
 <prefwindow id="calilay.pref" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
             title="Calilay 図書館設定"
-	    buttons="accept,cancel"
+            buttons="accept,cancel"
             windowType="Calilay:Config">
   <prefpane id="pref.general"
             label="一般"
             image="chrome://calilay/skin/config.png"
-	    src="chrome://calilay/content/config-general.xul"
-	    onpaneload="onpaneload();" />
+            src="chrome://calilay/content/config-general.xul"
+            onpaneload="onpaneload();" />
   <prefpane id="pref.about"
             label="情報"
             image="chrome://calilay/skin/help.png"
-	    src="chrome://calilay/content/config-about.xul"
-	    onpaneload="onpaneload();" />
-  <script type='application/x-javascript' src='config.js'></script>
+            src="chrome://calilay/content/config-about.xul"
+            onpaneload="onpaneload();" />
+  <script src="config.js"></script>
 </prefwindow>

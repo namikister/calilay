@@ -40,7 +40,7 @@
             })
         );
 
-        $.get("http://calil.jp/city_list", function (text) {
+        $.get("https://calil.jp/city_list", function (text) {
             var json = text.match(/loadcity\((.*?)\);$/);
             var data = JSON.parse(json[1]);
             cityData = data;
@@ -90,7 +90,7 @@
         $loading.addClass("show");
 
         $.ajax({
-            url: 'http://api.calil.jp/library',
+            url: 'https://api.calil.jp/library',
             data: {
                 appkey: appkey,
                 format: "json",

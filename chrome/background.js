@@ -9,4 +9,3 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     var response = (request.method == "getLocalStorage") ? {data: localStorage[request.key]} : {};
     sendResponse(response);
 });
-

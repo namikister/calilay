@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "content_security_policy": "script-src 'self'; object-src 'self'",
     "name": "Calilay",
-    "version": "0.40.5",
+    "version": "0.40.7",
     "description": "Amazonで見ている本があるか、複数の図書館から検索し表示します。",
     "homepage_url": "https://sites.google.com/site/calilay/",
     "background": {
@@ -15,9 +15,7 @@
     },
     "permissions" : [
         "tabs",
-        "http://calil.jp/",
         "https://calil.jp/",
-        "http://api.calil.jp/",
         "https://api.calil.jp/"
     ],
     "icons" : {
@@ -26,7 +24,7 @@
     "content_scripts": [
         {
             "matches": ["http://mediamarker.net/u/*", "http://www.amazon.co.jp/*", 
-                        "https://www.amazon.co.jp/*", "http://book.akahoshitakuya.com/*"],
+                        "https://www.amazon.co.jp/*", "http://bookmeter.com/*"],
             "css": ["calilapi.css"],
             "js": ["jquery-1.6.4.min.js", "calilapi.js", "sites.js", "calilay.js"],
             "run_at": "document_end"

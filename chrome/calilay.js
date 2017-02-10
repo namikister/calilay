@@ -92,12 +92,12 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
 
         DockushoMeterPre: function () {
             var isbnList = [];
-            $('div.book.book_button_add_ver').not(':has(div.calilay)').each(function(i) {
-                var href = $(this).children('a:first').attr('href');
+            $('div.book.book_box_inline_3r').not(':has(div.calilay)').each(function(i) {
+                var href = $(this).find('div.book_box_book_image > a:first').attr('href');
                 if (href.match(/\/b\/([A-Z0-9]{10})/)) {
                     var isbn = RegExp.$1;
                     isbnList.unshift(isbn);
-                    $(this).css('height', 'auto !important').append(createInitialElement(isbn));
+                    $(this).css({'cssText': 'height: auto !important;'}).append(createInitialElement(isbn));
                 }
             });
             return $.unique(isbnList);

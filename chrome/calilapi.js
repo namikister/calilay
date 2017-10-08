@@ -300,7 +300,7 @@ CalilRender.prototype =  {
 				total_status = "蔵書あり";
 			}
 			text += '<div class="calil_libname" style="color:'+ color + '; background-color:'+bgcolor+';">';
-			text += '<a href="http://calil.jp/library/search?s='+systemid+'&k='+encodeURIComponent(i)+'">' + i + '</a>';
+			text += '<a href="https://calil.jp/library/search?s='+systemid+'&k='+encodeURIComponent(i)+'">' + i + '</a>';
 			text += '<div class="calil_status">';
 			text += status;
 			text += '</div>';
@@ -346,7 +346,7 @@ CalilRender.prototype =  {
 		}
 
 		var style = this.render_status(status);
-		var link = 'http://calil.jp/book/' + isbn;
+		var link = 'https://calil.jp/book/' + isbn;
 		text += '<div style="white-space:nowrap;">';
 		text += '<a href="'+link+'" class="calil_status '+style.css+'">'+ style.status + '</a></div>';
 

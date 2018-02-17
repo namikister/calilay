@@ -41,7 +41,7 @@
         );
 
         $.get("https://calil.jp/city_list", function (text) {
-            var json = text.match(/loadcity\((.*?)\);$/);
+            var json = text.match(/loadcity\((.*?)\);/);
             var data = JSON.parse(json[1]);
             cityData = data;
             $("#prefSelect")
@@ -107,7 +107,7 @@
             },
             dataType: "text"
         }).success(function(text) {
-            var json = text.match(/callback\((.*?)\);$/);
+            var json = text.match(/callback\((.*?)\);/);
             var data = JSON.parse(json[1]);
             var options, systems = [];
 

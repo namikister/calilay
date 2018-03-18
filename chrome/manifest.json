@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "content_security_policy": "script-src 'self'; object-src 'self'",
     "name": "Calilay",
-    "version": "0.40.8",
+    "version": "0.41.1",
     "description": "Amazonで見ている本があるか、複数の図書館から検索し表示します。",
     "homepage_url": "https://sites.google.com/site/calilay/",
     "background": {

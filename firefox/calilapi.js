@@ -315,9 +315,10 @@ CalilRender.prototype =  {
 
         if ($("#"+isbn)){
             $("#"+isbn).find("#"+systemid+" .calil_system_status")
-                .html("："+total_status)
-                .removeClass('calilay_searching');
-            $("#"+isbn).find("#"+systemid+"> .prefix").html(text);
+                       .html("："+total_status)
+                       .removeClass('calilay_searching');
+            $("#"+isbn).find("#"+systemid+"> .prefix")
+                       .html(DOMPurify.sanitize(text, {SAFE_FOR_JQUERY: true}));
         }
     },
 
@@ -368,7 +369,7 @@ CalilRender.prototype =  {
                     text += '<a href="'+data.reserveurl+'" target="_blank"><img border="0" src="http://gyazo.com/2064f557b8c17c879558165b0020ff5e.png"></a>';
                     text += '</div>';
                 }
-                $("#"+isbn).html(text);
+                $("#"+isbn).html(DOMPurify.sanitize(text, {SAFE_FOR_JQUERY: true}));
                 $("#"+isbn).attr("status",status);
                 this.showSearchProgress();
             }

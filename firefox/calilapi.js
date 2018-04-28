@@ -107,7 +107,7 @@ Calil.prototype = {
             var newurl = "https://api.calil.jp/check?appkey="+this.appkey+"&session=" + session;
             var self = this;
             setTimeout(function(){
-                self.call_api(newurl);
+                self.call_api(DOMPurify.sanitize(newurl));
             },seconds);
         }
         else {

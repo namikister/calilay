@@ -72,6 +72,7 @@
         yindex.forEach(function(y) {
             if (cities[y] === undefined) return;
             options = options.concat(cities[y].map(function (city) {
+                                         city = DOMPurify.sanitize(city);
                                          return new Option(city, city);
                                      }));
         });
@@ -126,7 +127,8 @@
                               return false;
                           }
                       }).map(function(elem) {
-                          return new Option(elem.systemname, elem.systemid);
+                          return new Option(DOMPurify.sanitize(elem.systemname),
+                                            DOMPurify.sanitize(elem.systemid));
                       });
 
             $systemSelect

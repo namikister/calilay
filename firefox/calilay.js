@@ -34,7 +34,7 @@ browser.storage.local.get("libraries").then(function(item) {
                     '<div class="prefix"></div>' +
                     '</div>';
             }).join("") +
-            '<div class="calil_clear"></div></div>';
+            '</div>';
         return DOMPurify.sanitize(html, {SAFE_FOR_JQUERY: true});
     };
 

@@ -27,7 +27,7 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
                     '<div class="prefix"></div>' +
                     '</div>';
             }).join("") +
-            '<div class="calil_clear"></div></div>';
+            '</div>';
         return html;
     };
 

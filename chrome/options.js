@@ -40,16 +40,19 @@
             })
         );
 
-        $.get("https://calil.jp/city_list", function (text) {
-            var json = text.match(/loadcity\((.*?)\);/);
-            var data = JSON.parse(json[1]);
-            cityData = data;
-            $("#prefSelect")
-            .attr("disabled", false)
-            .focus();
-        }, "text").error(function(jqXHR, textStatus) {
-            alert('市町村の取得に失敗しました。:' + textStatus);
-        });
+        $.ajax({url: "https://calil.jp/city_list",
+                dataType: "text",
+                success: function (text) {
+                    var json = text.match(/loadcity\((.*?)\);/);
+                    var data = JSON.parse(json[1]);
+                    cityData = data;
+                    $("#prefSelect")
+                    .attr("disabled", false)
+                    .focus();
+                },
+                error: function(jqXHR, textStatus) {
+                    alert('市町村の取得に失敗しました。:' + textStatus);
+                }});
     });
 
     $("#prefSelect").change(function() {
@@ -97,42 +100,45 @@
                 pref: $prefSelect.val(),
                 city: $citySelect.val()
             },
-            dataType: "text"
-        }).success(function(text) {
-            var json = text.match(/callback\((.*?)\);/);
-            var data = JSON.parse(json[1]);
-            var options, systems = [];
+            dataType: "text",
+            success: function(text) {
+                var json = text.match(/callback\((.*?)\);/);
+                var data = JSON.parse(json[1]);
+                var options, systems = [];
 
-            if (data.length <= 0) {
-                alert('図書館が見つかりませんでした。');
-                return;
+                if (data.length <= 0) {
+                    alert('図書館が見つかりませんでした。');
+                    return;
+                }
+
+                options = data.filter(function(elem){
+                              var id = elem.systemid;
+                              if (systems.indexOf(id) < 0) {
+                                  systems.push(id);
+                                  return true;
+                              }
+                              else {
+                                  return false;
+                              }
+                          }).map(function(elem) {
+                              return new Option(elem.systemname, elem.systemid);
+                          });
+
+                $systemSelect
+                .find("option").not(":first").remove().end().end()
+                .append(options)
+                .val("")
+                .attr("disabled", false)
+                .focus();
+            },
+            error: function(jqXHR, textStatus) {
+                alert('図書館の取得に失敗しました。:' + textStatus);
+            },
+            complete: function() {
+                $prefSelect.attr("disabled", false);
+                $citySelect.attr("disabled", false);
+                $loading.removeClass("show");
             }
-
-            options = data.filter(function(elem){
-                          var id = elem.systemid;
-                          if (systems.indexOf(id) < 0) {
-                              systems.push(id);
-                              return true;
-                          }
-                          else {
-                              return false;
-                          }
-                      }).map(function(elem) {
-                          return new Option(elem.systemname, elem.systemid);
-                      });
-
-            $systemSelect
-            .find("option").not(":first").remove().end().end()
-            .append(options)
-            .val("")
-            .attr("disabled", false)
-            .focus();
-        }).error(function(jqXHR, textStatus) {
-            alert('図書館の取得に失敗しました。:' + textStatus);
-        }).complete(function() {
-            $prefSelect.attr("disabled", false);
-            $citySelect.attr("disabled", false);
-            $loading.removeClass("show");
         });
     });
 

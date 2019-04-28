@@ -40,16 +40,19 @@
             })
         );
 
-        $.get("https://calil.jp/city_list", function (text) {
-            var json = text.match(/loadcity\((.*?)\);/);
-            var data = JSON.parse(json[1]);
-            cityData = data;
-            $("#prefSelect")
-            .attr("disabled", false)
-            .focus();
-        }, "text").error(function(jqXHR, textStatus) {
-            alert('市町村の取得に失敗しました。:' + textStatus);
-        });
+        $.ajax({url: "https://calil.jp/city_list",
+                dataType: "text",
+                success: function (text) {
+                    var json = text.match(/loadcity\((.*?)\);/);
+                    var data = JSON.parse(json[1]);
+                    cityData = data;
+                    $("#prefSelect")
+                    .attr("disabled", false)
+                    .focus();
+                },
+                error: function(jqXHR, textStatus) {
+                    alert('市町村の取得に失敗しました。:' + textStatus);
+                }});
 
         loadLibraries(function(libraries) {
             $("#libraryList").append(
@@ -61,7 +64,7 @@
     });
 
     $("#prefSelect").change(function() {
-        var $prefSelect   = $(this),
+        var $prefSelect = $(this),
             cities = cityData[$prefSelect.val()],
             yindex = "あ,か,さ,た,な,は,ま,や,ら,わ".split(","),
             options = [];
@@ -85,7 +88,7 @@
         .focus();
     });
 
-    $("#citySelect").change(function() {
+    $("#citySelect").on("change", function() {
         var $citySelect = $(this),
             $prefSelect = $("#prefSelect"),
             $systemSelect = $("#systemSelect"),
@@ -106,59 +109,62 @@
                 pref: $prefSelect.val(),
                 city: $citySelect.val()
             },
-            dataType: "text"
-        }).success(function(text) {
-            var json = text.match(/callback\((.*?)\);/);
-            var data = JSON.parse(json[1]);
-            var options, systems = [];
+            dataType: "text",
+            success: function(text) {
+                var json = text.match(/callback\((.*?)\);/);
+                var data = JSON.parse(json[1]);
+                var options, systems = [];
 
-            if (data.length <= 0) {
-                alert('図書館が見つかりませんでした。');
-                return;
-            }
+                if (data.length <= 0) {
+                    alert('図書館が見つかりませんでした。');
+                    return;
+                }
 
-            options = data.filter(function(elem){
-                          var id = elem.systemid;
-                          if (systems.indexOf(id) < 0) {
-                              systems.push(id);
-                              return true;
-                          }
-                          else {
-                              return false;
-                          }
-                      }).map(function(elem) {
-                          return new Option(DOMPurify.sanitize(elem.systemname),
-                                            DOMPurify.sanitize(elem.systemid));
+                options = data.filter(function(elem){
+                              var id = elem.systemid;
+                              if (systems.indexOf(id) < 0) {
+                                  systems.push(id);
+                                  return true;
+                              }
+                              else {
+                                  return false;
+                              }
+                          }).map(function(elem) {
+                              return new Option(DOMPurify.sanitize(elem.systemname),
+                                                DOMPurify.sanitize(elem.systemid));
                       });
 
-            $systemSelect
-            .find("option").not(":first").remove().end().end()
-            .append(options)
-            .val("")
-            .attr("disabled", false)
-            .focus();
-        }).error(function(jqXHR, textStatus) {
-            alert('図書館の取得に失敗しました。:' + textStatus);
-        }).complete(function() {
-            $prefSelect.attr("disabled", false);
-            $citySelect.attr("disabled", false);
-            $loading.removeClass("show");
+                $systemSelect
+                .find("option").not(":first").remove().end().end()
+                .append(options)
+                .val("")
+                .attr("disabled", false)
+                .focus();
+            },
+            error: function(jqXHR, textStatus) {
+                alert('図書館の取得に失敗しました。:' + textStatus);
+            },
+            complete: function() {
+                $prefSelect.attr("disabled", false);
+                $citySelect.attr("disabled", false);
+                $loading.removeClass("show");
+            }
         });
     });
 
-    $("#systemSelect").change(function() {
+    $("#systemSelect").on("change", function() {
         $("#addLibrary")
         .attr("disabled", false)
         .focus();
     });
 
-    $("#libraryList").change(function() {
+    $("#libraryList").on("change", function() {
         if ($(this).children("option:selected").length > 0) {
             $("#removeLibrary").attr("disabled", false);
         }
     });
 
-    $("#addLibrary").click(function() {
+    $("#addLibrary").on("click", function() {
         var $libraryList = $("#libraryList"),
             $selected = $("#systemSelect option:selected"),
             library = {
@@ -180,7 +186,7 @@
         });
     });
 
-    $("#removeLibrary").click(function() {
+    $("#removeLibrary").on("click", function() {
         var $selected = $("#libraryList option:selected"),
             id = $selected.val();
         $selected.remove();

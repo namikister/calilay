@@ -2,7 +2,7 @@
     "manifest_version": 2,
     // "content_security_policy": "script-src 'self'; object-src 'self'",
     "name": "Calilay",
-    "version": "0.41.4",
+    "version": "0.41.5",
     "description": "Amazonで見ている本があるか、複数の図書館から検索し表示します。",
     "homepage_url": "https://sites.google.com/site/calilay/",
     "background": {
@@ -29,7 +29,7 @@
             "matches": ["http://mediamarker.net/u/*", "http://www.amazon.co.jp/*", 
                         "https://www.amazon.co.jp/*", "https://bookmeter.com/*"],
             "css": ["calilapi.css"],
-            "js": ["purify.min.js", "jquery-2.2.4.min.js", "calilapi.js", "sites.js", "calilay.js"],
+            "js": ["purify.min.js", "jquery-3.4.0.min.js", "calilapi.js", "sites.js", "calilay.js"],
             "run_at": "document_end"
         }
     ]

@@ -52,40 +52,18 @@ Calil.prototype = {
 		$("#"+isbn).attr("status","");
 	},
 	search : function() {
-		var domain = "https://api.calil.jp";
-		var apiurl = domain + "/check?appkey="+this.appkey+"&systemid="+ this.systemid_list.join(',') +"&isbn="+ this.isbn_list.join(',');
+		var apiurl = "/check?appkey="+this.appkey+"&systemid="+ this.systemid_list.join(',') +"&isbn="+ this.isbn_list.join(',');
 		this.call_api(apiurl);
 
 		if(this.render){
 			this.render.start_render_books(this.isbn_list, this.systemid_list);
 		}
  	},
-	call_api : function(url) {
+	call_api : function(params) {
 		var self = this;
-		if(typeof GM_xmlhttpRequest == 'function'){
-			GM_xmlhttpRequest({
-				method:'GET', 
-				url:url,
-				onload:function(data){
-					var json = data.responseText.match(/callback\((.*?)\)/);
-					data = JSON.parse(json[1]);
-					self.callback(data);
-				}
-			});
-		}else{
-			$.ajax({
-					url: url,
-					dataType: "text",
-					success:function(data){
-					                var json = data.match(/callback\((.*?)\)/);
-					                data = JSON.parse(json[1]);
-					                self.callback(data);
-					},
-					error:function(jqXHR, textStatus, errorThrown){
-							console.log('error: ' + textStatus);
-					}
-			});
-		}
+        chrome.runtime.sendMessage({method: "callAPI", params: params}, function(data) {
+            self.callback(data);
+        });
 		clearTimeout(this.api_timeout_timer);
 		this.api_timeout_timer = setTimeout(function(){
 			self.api_timeout();
@@ -104,7 +82,7 @@ Calil.prototype = {
 			if (this.api_call_count > 7){
 				seconds = 5000;
 			}
-			var newurl = "https://api.calil.jp/check?appkey="+this.appkey+"&session=" + session;
+			var newurl = "/check?appkey="+this.appkey+"&session=" + session;
 			var self = this;
 			setTimeout(function(){
 				self.call_api(newurl);

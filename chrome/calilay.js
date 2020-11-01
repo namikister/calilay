@@ -66,7 +66,7 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
             renderIsbnList(isbnList);
         };
         $.get(detailPageURI, callback);
-    }
+    };
 
     var renderFunctions = {
         MediaMarker: function () {
@@ -152,5 +152,5 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
     render();
 
     document.addEventListener("AutoPagerAfterInsert", render);
-    document.addEventListener("visibilitychange", render);
+    // document.addEventListener("visibilitychange", render);
 });

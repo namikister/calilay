@@ -9,7 +9,7 @@ function getSiteType(url) {
     for (var type in pages) {
         if (pages[type].test(url)) {
             if (type == "AmazonKindle"){
-                return $("body").hasClass("ebooks") ? type : null;
+                return document.body.classList.contains("ebooks") ? type : null;
             }
             return type;
         }

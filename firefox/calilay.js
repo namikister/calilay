@@ -161,5 +161,5 @@ browser.storage.local.get("libraries").then(function(item) {
     render();
 
     document.addEventListener("AutoPagerAfterInsert", render);
-    document.addEventListener("visibilitychange", render);
+    // document.addEventListener("visibilitychange", render);
 }, onError);

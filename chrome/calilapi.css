@@ -181,3 +181,9 @@
     color: white !important;
     background-color: #26BEFF;
 }
+.calilay {
+    display: none;
+}
+.calilay[status] {
+    display: block;
+}

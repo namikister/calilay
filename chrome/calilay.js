@@ -36,13 +36,13 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
         var calil = new Calil({appkey: appkey,
                                render: new CalilRender('single'),
                                isbn: isbnList,
-                               systemid: libraries.map(function(library) {
+                               systemid: libraries.map((library) => {
                                              return library.id;
                                          })
                               });
 
         calil.search();
-    }
+    };
 
     // for Kindle formats, find the ISBNs of their corresponding paper books from their detail pages.
     var resolveKindleIsbn = function(html) {
@@ -152,5 +152,22 @@ chrome.extension.sendRequest({method: "getLocalStorage", key: "libraries"}, func
     render();
 
     document.addEventListener("AutoPagerAfterInsert", render);
-    // document.addEventListener("visibilitychange", render);
+
+    if (siteType === 'AmazonWishlist') {
+        (function() {
+            var ticking = false;
+
+            function func() {
+                if (!ticking) {
+                    requestAnimationFrame(function() {
+                        ticking = false;
+                        render();
+                    });
+                    ticking = true;
+                }
+            }
+
+            document.addEventListener('scroll', func, {passive: true});
+        })();
+    }
 });

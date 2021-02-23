@@ -161,5 +161,22 @@ browser.storage.local.get("libraries").then(function(item) {
     render();
 
     document.addEventListener("AutoPagerAfterInsert", render);
-    // document.addEventListener("visibilitychange", render);
+
+    if (siteType === 'AmazonWishlist') {
+        (function() {
+            var ticking = false;
+
+            function func() {
+                if (!ticking) {
+                    requestAnimationFrame(function() {
+                        ticking = false;
+                        render();
+                    });
+                    ticking = true;
+                }
+            }
+
+            document.addEventListener('scroll', func, {passive: true});
+        })();
+    }
 }, onError);

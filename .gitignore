@@ -7,3 +7,4 @@ misc/*
 sha1hash.txt
 *.pem
 
+.DS_Store

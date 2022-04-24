@@ -192,8 +192,8 @@
         $selected.remove();
         loadLibraries(function(libraries) {
             saveLibraries(libraries.filter(function(elem) {
-                              return elem.id !== id;
-                          }));
+                return elem.id !== id;
+            }));
         });
         $("#removeLibrary").attr("disabled", true);
     });
